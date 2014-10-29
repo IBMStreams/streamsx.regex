@@ -38,9 +38,9 @@
         <parameter cardinality="1" expressionMode="Attribute" name="resultAttr" optional="false" type="boolean">
           <description/>
         </parameter>
-        <inputPort minNumPorts="0" optional="true" windowPunctInputMode="WindowBound">
+        <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
           <description/>
-          <windowPolicy>OptionallyWindowed</windowPolicy>
+          <windowPolicy>NonWindowed</windowPolicy>
         </inputPort>
       </primitiveOp>
       <primitiveOp language="Cpp" modelUriIndex="3" name="RegexMatch" public="true">

@@ -14,27 +14,20 @@ sub main::generate($$) {
    	my $outputPort = $model->getOutputPortAt(0);
    	my $inTuple = $inputPort->getCppTupleName();
    
-   	my $patternParam = $model->getParameterByName("pattern");
-   	my $pattern = (defined $patternParam) ? $patternParam->getValueAt(0)->getCppExpression() : '""';
+   	my $logErrors = ($_ = $model->getParameterByName('logErrors')) ? $_->getValueAt(0)->getCppExpression() : "true";
+   	my $maxMemory = ($_ = $model->getParameterByName('maxMemory')) ? $_->getValueAt(0)->getCppExpression() : 1000000;
    
-   	my $maxMemoryParam = $model->getParameterByName("maxMemory");
-   	my $maxMemory = (defined $maxMemoryParam) ? $maxMemoryParam->getValueAt(0)->getCppExpression() : 1000000;
-   
-   	my $logErrorsParam = $model->getParameterByName("logErrors");
-   	my $logErrors = (defined $logErrorsParam) ? $logErrorsParam->getValueAt(0)->getCppExpression() : "true";
-   
-   	my $regexFunctionParam = $model->getParameterByName("regexFunction");
-   	my $regexFunction = (defined $regexFunctionParam) ? $regexFunctionParam->getValueAt(0)->getSPLExpression() : "regexPartialMatch";
-   
+   	my $pattern = ($_ = $model->getParameterByName('pattern')) ? $_->getValueAt(0)->getCppExpression() : '""';
    	my $patternAttrParam = $model->getParameterByName("patternAttr");
-   	my $patternAttr = (defined $patternAttrParam) ? $patternAttrParam->getValueAt(0)->getCppExpression() : '""';
+   	my $patternAttr = ($patternAttrParam) ? $patternAttrParam->getValueAt(0)->getCppExpression() : '""';
    
-   	my $searchAttrParam = $model->getParameterByName("searchAttr");
-   	my $searchAttr = $searchAttrParam->getValueAt(0)->getCppExpression();
+   	my $regexFunction = ($_ = $model->getParameterByName('regexFunction')) ? $_->getValueAt(0)->getCppExpression() : "regexPartialMatch";
    
-   	my $resultAttrParam = $model->getParameterByName("resultAttr");
-   	my $resultAttr = $resultAttrParam->getValueAt(0)->getCppExpression();
-   	my $resultType = $resultAttrParam->getValueAt(0)->getCppType();
+   	my $resultAttrParamValue0 = $model->getParameterByName("resultAttr")->getValueAt(0);
+   	my $resultAttr = $resultAttrParamValue0->getCppExpression();
+   	my $resultType = $resultAttrParamValue0->getCppType();
+   
+   	my $searchAttr = $model->getParameterByName("searchAttr")->getValueAt(0)->getCppExpression();
    print "\n";
    print "\n";
    print 'bool MY_OPERATOR_SCOPE::MY_OPERATOR::regexFullMatch(const string & str) {', "\n";
@@ -101,7 +94,7 @@ sub main::generate($$) {
    print $resultAttr;
    print ';', "\n";
    print '	';
-    if (not $patternAttrParam) {
+    unless ($patternAttrParam) {
    print "\n";
    print '		*result = ';
    print $regexFunction;

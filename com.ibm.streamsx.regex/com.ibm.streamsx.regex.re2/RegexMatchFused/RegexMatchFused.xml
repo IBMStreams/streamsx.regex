@@ -92,13 +92,15 @@
       </parameter>
     </parameters>
     <inputPorts>
-      <inputPortOpenSet>
-        <description></description>
-        <windowingDescription></windowingDescription>
+      <inputPortSet>
+        <description/>
+        <windowingDescription/>
         <tupleMutationAllowed>true</tupleMutationAllowed>
-        <windowingMode>OptionallyWindowed</windowingMode>
-        <windowPunctuationInputMode>WindowBound</windowPunctuationInputMode>
-      </inputPortOpenSet>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </inputPortSet>
     </inputPorts>
     <outputPorts/>
   </cppOperatorModel>
