@@ -1,0 +1,16 @@
+# project specific excludes
+com.ibm.streamsx.regex/doc
+com.ibm.streamsx.regex/impl/include/boost
+com.ibm.streamsx.regex/samples
+samples/*/doc
+samples/*/output
+samples/*/toolkit.xml
+index.*
+# begin streamsx.regex excluded
+.settings
+.toolkitList
+## C++ excludes
+# Compiled Object files
+*.slo
+*.lo
+*.o
