@@ -1,0 +1,40 @@
+namespace sample;
+
+use com.ibm.streamsx.regex.re2::*;
+
+composite RegexMatchNFSample {
+	graph
+		()as Custom_1 = Custom(){
+			logic
+				onProcess : {
+					// Simple partial match - regex pattern is interpreted on each call
+					// The usage is similar to SPL regex functions
+					printString("regexSimpleMatch: 'Hello world' matches '^Hello': ");
+					println(regexSimpleMatch("Hello world", "^Hello"));
+					
+					printString("regexSimpleMatch: 'Hello world' matches 'Hello$': ");
+					println(regexSimpleMatch("Hello world", "Hello$"));
+
+					// Fast partial match - regex pattern is compiled on the first call
+					// Each subsequent call will use the compiled version even if the new pattern given
+					printString("regexPartialMatch: 'Hello world' matches '^Hello': ");
+					println(regexPartialMatch("Hello world", "^Hello"));
+					
+					printString("regexPartialMatch: 'Hello world' matches '^Hello': ");
+					println(regexPartialMatch("Hello world"));
+					
+					printString("regexPartialMatch: 'Hello world' matches 'Hello$': ");
+					println(regexPartialMatch("Hello world", "Hello$")); // Still using compiled '^Hello' pattern
+
+					// Fast full match is similar to the partial match, but requires to match the whole string
+					// Existing regex pattern still applies as it was compiled on previous call
+					printString("regexFullMatch: 'Hello world' matches '^Hello': ");
+					println(regexFullMatch("Hello world"));
+					
+					printString("regexFullMatch: 'Hello world' matches '^Hello world': ");
+					println(regexFullMatch("Hello world", "^Hello world")); // new pattern is not used
+
+				}
+
+		}
+}
