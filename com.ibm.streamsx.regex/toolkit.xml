@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="3.2.1.1" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <toolkit name="com.ibm.streamsx.regex" requiredProductVersion="3.1.0" version="1.0.0">
+    <description/>
+    <uriTable>
+      <uri index="2" value="com.ibm.streamsx.regex.re2/RegexMatchFused"/>
+      <uri index="3" value="com.ibm.streamsx.regex.re2/RegexMatch"/>
+      <uri index="1" value="com.ibm.streamsx.regex.re2/native.function/function.xml"/>
+    </uriTable>
+    <namespace name="com.ibm.streamsx.regex.re2">
+      <primitiveOp language="Cpp" modelUriIndex="2" name="RegexMatchFused" public="true">
+        <description/>
+        <customLiterals name="regexTypes">
+          <value name="regexFullMatch"/>
+          <value name="regexPartialMatch"/>
+          <value name="regexSimpleMatch"/>
+        </customLiterals>
+        <parametersDescription/>
+        <parameter cardinality="1" expressionMode="Expression" name="pattern" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="maxMemory" optional="true" type="uint64">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="logErrors" optional="true" type="boolean">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="CustomLiteral" name="regexFunction" optional="false" type="regexTypes">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Attribute" name="patternAttr" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Attribute" name="searchAttr" optional="false" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Attribute" name="resultAttr" optional="false" type="boolean">
+          <description/>
+        </parameter>
+        <inputPort minNumPorts="0" optional="true" windowPunctInputMode="WindowBound">
+          <description/>
+          <windowPolicy>OptionallyWindowed</windowPolicy>
+        </inputPort>
+      </primitiveOp>
+      <primitiveOp language="Cpp" modelUriIndex="3" name="RegexMatch" public="true">
+        <description/>
+        <outputFunctions name="RegexFS">
+          <function name="AsIs" returnType="T">
+            <description/>
+            <prototype>&lt;any T&gt; T AsIs(T v)</prototype>
+            <parameter name="v" type="T"/>
+          </function>
+          <function name="RegexFullMatch" returnType="boolean">
+            <description/>
+            <prototype>boolean RegexFullMatch(rstring str)</prototype>
+            <parameter name="str" type="rstring"/>
+          </function>
+          <function name="RegexFullMatch" returnType="boolean">
+            <description/>
+            <prototype>boolean RegexFullMatch(rstring str, rstring pattern)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+          <function name="RegexPartialMatch" returnType="boolean">
+            <description/>
+            <prototype>boolean RegexPartialMatch(rstring str)</prototype>
+            <parameter name="str" type="rstring"/>
+          </function>
+          <function name="RegexPartialMatch" returnType="boolean">
+            <description/>
+            <prototype>boolean RegexPartialMatch(rstring str, rstring pattern)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+          <function name="RegexSimpleMatch" returnType="boolean">
+            <description/>
+            <prototype>boolean RegexSimpleMatch(rstring str, rstring pattern)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+        </outputFunctions>
+        <parametersDescription/>
+        <parameter cardinality="1" expressionMode="Expression" name="pattern" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="maxMemory" optional="true" type="int64">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="logErrors" optional="true" type="boolean">
+          <description/>
+        </parameter>
+        <inputPort minNumPorts="0" optional="true" windowPunctInputMode="WindowBound">
+          <description/>
+          <windowPolicy>OptionallyWindowed</windowPolicy>
+        </inputPort>
+        <outputPort expressionMode="Expression" minNumPorts="0" optional="true" windowPunctOutputMode="Generating">
+          <description/>
+        </outputPort>
+      </primitiveOp>
+      <function modelUriIndex="1" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>An example native function</description>
+        <prototype>public boolean regexFullMatch(rstring str)</prototype>
+        <parameter name="str" type="rstring"/>
+      </function>
+      <function modelUriIndex="1" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>An example native function</description>
+        <prototype>public boolean regexFullMatch(rstring str, rstring pattern)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="pattern" type="rstring"/>
+      </function>
+      <function modelUriIndex="1" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>An example native function</description>
+        <prototype>public boolean regexFullMatch(rstring str, rstring pattern, int32 maxmem)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="pattern" type="rstring"/>
+        <parameter name="maxmem" type="int32"/>
+      </function>
+      <function modelUriIndex="1" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <prototype>public boolean regexPartialMatch(rstring str)</prototype>
+        <parameter name="str" type="rstring"/>
+      </function>
+      <function modelUriIndex="1" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <prototype>public boolean regexPartialMatch(rstring str, rstring pattern)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="pattern" type="rstring"/>
+      </function>
+      <function modelUriIndex="1" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <prototype>public boolean regexPartialMatch(rstring str, rstring pattern, int32 maxmem)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="pattern" type="rstring"/>
+        <parameter name="maxmem" type="int32"/>
+      </function>
+      <function modelUriIndex="1" name="regexSimpleMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <prototype>public boolean regexSimpleMatch(rstring str, rstring pattern)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="pattern" type="rstring"/>
+      </function>
+    </namespace>
+  </toolkit>
+
+</toolkitModel>
