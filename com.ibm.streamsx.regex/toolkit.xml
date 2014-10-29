@@ -81,20 +81,20 @@
           </function>
         </outputFunctions>
         <parametersDescription/>
-        <parameter cardinality="1" expressionMode="Expression" name="pattern" optional="true" type="rstring">
+        <parameter cardinality="1" expressionMode="AttributeFree" name="pattern" optional="true" type="rstring">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Expression" name="maxMemory" optional="true" type="int64">
+        <parameter cardinality="1" expressionMode="AttributeFree" name="maxMemory" optional="true" type="int64">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Expression" name="logErrors" optional="true" type="boolean">
+        <parameter cardinality="1" expressionMode="AttributeFree" name="logErrors" optional="true" type="boolean">
           <description/>
         </parameter>
-        <inputPort minNumPorts="0" optional="true" windowPunctInputMode="WindowBound">
+        <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
           <description/>
-          <windowPolicy>OptionallyWindowed</windowPolicy>
+          <windowPolicy>NonWindowed</windowPolicy>
         </inputPort>
-        <outputPort expressionMode="Expression" minNumPorts="0" optional="true" windowPunctOutputMode="Generating">
+        <outputPort expressionMode="Expression" maxNumPorts="1" minNumPorts="1" optional="false" windowPunctOutputMode="Preserving">
           <description/>
         </outputPort>
       </primitiveOp>

@@ -54,7 +54,7 @@
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>true</rewriteAllowed>
-        <expressionMode>Expression</expressionMode>
+        <expressionMode>AttributeFree</expressionMode>
         <type>rstring</type>
         <cardinality>1</cardinality>
       </parameter>
@@ -63,7 +63,7 @@
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>true</rewriteAllowed>
-        <expressionMode>Expression</expressionMode>
+        <expressionMode>AttributeFree</expressionMode>
         <type>int64</type>
         <cardinality>1</cardinality>
       </parameter>
@@ -72,23 +72,25 @@
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>true</rewriteAllowed>
-        <expressionMode>Expression</expressionMode>
+        <expressionMode>AttributeFree</expressionMode>
         <type>boolean</type>
         <cardinality>1</cardinality>
       </parameter>
     </parameters>
     <inputPorts>
-      <inputPortOpenSet>
-        <description></description>
-        <windowingDescription></windowingDescription>
+      <inputPortSet>
+        <description/>
+        <windowingDescription/>
         <tupleMutationAllowed>false</tupleMutationAllowed>
-        <windowingMode>OptionallyWindowed</windowingMode>
-        <windowPunctuationInputMode>WindowBound</windowPunctuationInputMode>
-      </inputPortOpenSet>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </inputPortSet>
     </inputPorts>
     <outputPorts>
-      <outputPortOpenSet>
-        <description></description>
+      <outputPortSet>
+        <description/>
         <expressionMode>Expression</expressionMode>
         <autoAssignment>true</autoAssignment>
         <completeAssignment>true</completeAssignment>
@@ -97,10 +99,12 @@
           <default>AsIs</default>
           <type>RegexFS</type>
         </outputFunctions>
-        <windowPunctuationOutputMode>Generating</windowPunctuationOutputMode>
-        <windowPunctuationInputPort>-1</windowPunctuationInputPort>
+        <windowPunctuationOutputMode>Preserving</windowPunctuationOutputMode>
+        <windowPunctuationInputPort>0</windowPunctuationInputPort>
         <tupleMutationAllowed>true</tupleMutationAllowed>
-      </outputPortOpenSet>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </outputPortSet>
     </outputPorts>
   </cppOperatorModel>
 </operatorModel>
