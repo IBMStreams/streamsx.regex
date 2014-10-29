@@ -1,0 +1,95 @@
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+<%
+	my $inputPort = $model->getInputPortAt(0);
+	my $outputPort = $model->getOutputPortAt(0);
+	my $inTuple = $inputPort->getCppTupleName();
+
+	my $pattern = ($_ = $model->getParameterByName('pattern')) ? $_->getValueAt(0)->getCppExpression() : '""';
+	my $logErrors = ($_ = $model->getParameterByName('logErrors')) ? $_->getValueAt(0)->getCppExpression() : "true";
+	my $maxMemory = ($_ = $model->getParameterByName('maxMemory')) ? $_->getValueAt(0)->getCppExpression() : 1000000;
+%>
+
+bool MY_OPERATOR::RegexFullMatch(const string & str) {
+	return RE2::FullMatch(str, _regex) == 1;
+}
+
+bool MY_OPERATOR::RegexFullMatch(const string & str, const string & pattern) {
+
+	AutoPortMutex am(_mutex, *this);
+	if(_regexMap.count(pattern) == 0) {
+		string pat = pattern;
+		_regexMap.insert(pat, new RE2(pattern, _options));
+	}
+
+	return RE2::FullMatch(str, _regexMap.at(pattern)) == 1;
+}
+
+bool MY_OPERATOR::RegexPartialMatch(const string & str) {
+	return RE2::PartialMatch(str, _regex) == 1;
+}
+
+bool MY_OPERATOR::RegexPartialMatch(const string & str, const string & pattern) {
+
+	AutoPortMutex am(_mutex, *this);
+	if(_regexMap.count(pattern) == 0) {
+		string pat = pattern;
+		_regexMap.insert(pat, new RE2(pattern, _options));
+	}
+
+	return RE2::PartialMatch(str, _regexMap.at(pattern)) == 1;
+}
+
+bool MY_OPERATOR::RegexSimpleMatch(const string & str, const string & pattern) {
+	return RE2::PartialMatch(str, pattern) == 1;
+}
+
+MY_OPERATOR::MY_OPERATOR() : _options(), _regex(<%=$pattern%>, _options) {
+	_options.set_log_errors(<%=$logErrors%>);
+	_options.set_max_mem(<%=$maxMemory%>);
+}
+
+MY_OPERATOR::~MY_OPERATOR() {}
+
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
+	IPort0Type const & <%=$inTuple%> = static_cast<IPort0Type const&>(tuple);
+	OPort0Type * otuplePtr = getOutputTuple();
+
+	<% foreach my $attribute (@{$outputPort->getAttributes()}) {
+	  my $name = $attribute->getName();
+	  if ($attribute->hasAssignmentWithOutputFunction()) {
+		  my $operation = $attribute->getAssignmentOutputFunctionName();
+		  if ($operation eq 'AsIs') {
+			my $init = $attribute->getAssignmentOutputFunctionParameterValueAt(0)->getCppExpression();%>
+			otuplePtr->set_<%=$name%>(<%=$init%>);
+		  <%}
+		  else {
+			my $paramValues = $attribute->getAssignmentOutputFunctionParameterValues();%>
+			otuplePtr->set_<%=$name%>(<%=$operation%>(<%=join(",", map{$_->getCppExpression()} @$paramValues)%>));
+		  <%}
+	  }
+	  elsif ($attribute->getAssignmentValue()) {
+		  my $assign = $attribute->getAssignmentValue()->getCppExpression();%>
+		  otuplePtr->set_<%=$name%>(<%=$assign%>);
+	  <%}
+	}%>
+	submit(*otuplePtr, 0);
+
+}
+
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port) {
+   forwardWindowPunctuation(punct);
+}
+
+thread_specific_ptr<MY_OPERATOR::OPort0Type> MY_OPERATOR::otuplePtr_;
+
+MY_OPERATOR::OPort0Type * MY_OPERATOR::getOutputTuple() {
+	OPort0Type * otuplePtr = otuplePtr_.get();
+	if(!otuplePtr) {
+		otuplePtr_.reset(new OPort0Type());
+		otuplePtr = otuplePtr_.get();
+	}
+	return otuplePtr;
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>

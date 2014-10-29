@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functionModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd">
+  <functionSet>
+    <headerFileName>Regex.h</headerFileName>
+    <cppNamespaceName>regex</cppNamespaceName>
+    <functions>
+      <function>
+        <description>An example native function</description>
+        <prototype>public boolean regexFullMatch(rstring str)</prototype>
+      </function>
+      <function>
+        <description>An example native function</description>
+        <prototype>public boolean regexFullMatch(rstring str, rstring pattern)</prototype>
+      </function>
+      <function>
+        <description>An example native function</description>
+        <prototype>public boolean regexFullMatch(rstring str, rstring pattern, int32 maxmem)</prototype>
+      </function>
+      <function>
+        <description></description>
+        <prototype>public boolean regexPartialMatch(rstring str)</prototype>
+      </function>
+      <function>
+        <description></description>
+        <prototype>public boolean regexPartialMatch(rstring str, rstring pattern)</prototype>
+      </function>
+      <function>
+        <description></description>
+        <prototype>public boolean regexPartialMatch(rstring str, rstring pattern, int32 maxmem)</prototype>
+      </function>
+      <function>
+        <description></description>
+        <prototype>public boolean regexSimpleMatch(rstring str, rstring pattern)</prototype>
+      </function>
+    </functions>
+    <dependencies>
+      <library>
+        <cmn:description></cmn:description>
+        <cmn:managedLibrary>
+          <cmn:lib>re2</cmn:lib>
+          <cmn:libPath>../../impl/lib</cmn:libPath>
+          <cmn:includePath>../../impl/include</cmn:includePath>
+        </cmn:managedLibrary>
+      </library>
+    </dependencies>
+  </functionSet>
+</functionModel>
