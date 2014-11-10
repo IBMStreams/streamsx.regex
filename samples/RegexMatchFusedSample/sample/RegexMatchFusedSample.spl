@@ -41,4 +41,7 @@ composite RegexMatchFusedSample {
 //				pattern: "^Hello" ;
 				patternAttr : pattern ;
 		}
+
+	config
+		placement : partitionColocation("FUSED");
 }
