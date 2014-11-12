@@ -2,6 +2,15 @@ namespace sample;
 
 use com.ibm.streamsx.regex.re2::RegexMatchFused;
 
+/**
+* Run functional test.
+* 
+* * Functional test - Custom calls RegexMatchFused twice with different patterns.
+* 
+* The output:
+* * The result is: true
+* * The result is: false
+*/
 composite RegexMatchFusedSample {
 	graph
 		(stream<rstring search, boolean result, rstring pattern> Custom_1_out0)as

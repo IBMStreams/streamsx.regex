@@ -2,6 +2,20 @@ namespace sample;
 
 use com.ibm.streamsx.regex.re2::*;
 
+/**
+* Run functional tests using native functions.
+* 
+* * Functional tests for simple, partial and full matches.
+* 
+* The output:
+* * regexSimpleMatch: 'Hello world' matches '^Hello': true
+* * regexSimpleMatch: 'Hello world' matches 'Hello$': false
+* * regexPartialMatch: 'Hello world' matches '^Hello': true
+* * regexPartialMatch: 'Hello world' matches '^Hello': true
+* * regexPartialMatch: 'Hello world' matches 'Hello$': true
+* * regexFullMatch: 'Hello world' matches '^Hello': false
+* * regexFullMatch: 'Hello world' matches '^Hello world': false
+*/
 composite RegexMatchNFSample {
 	graph
 		()as Custom_1 = Custom(){
