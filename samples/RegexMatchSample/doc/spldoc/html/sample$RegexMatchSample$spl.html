@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="RegexMatchSample.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit__"/>
+<link rel="stylesheet" type="text/css" href="../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../html/spldoc.css"/>
+<title>RegexMatchSample.spl</title>
+</head>
+<body id="spldoc_compilationunit__">
+
+
+<h1 class="title topictitle1">RegexMatchSample.spl</h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="toolkit.html">
+com.ibm.streamsx.regex.RegexMatchSample
+</a>
+-&gt; <a class="xref" href="sample$.html">sample</a>-&gt; RegexMatchSample.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+    <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Composites</dt>
+
+      <dd class="dd"><dl class="dl">
+  
+     <dt class="dt dlterm"><a class="xref" href="#spldoc_compilationunit____composite_operator__RegexMatchSample">composite RegexMatchSample</a></dt>
+
+     <dd class="dd">Run two separate streams: performance test and functional test.</dd>
+
+  
+     </dl>
+</dd>
+
+    
+     </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit____composite_operator__RegexMatchSample"><h2 class="title sectiontitle splpart">composite RegexMatchSample</h2>
+  
+</div>
+
+<div class="section">
+
+<p class="p">Run two separate streams: performance test and functional test. 
+</p>
+
+<ul class="ul">
+<li class="li"> Performance test - Beacon shoots 10,000,000 tuples. No output. </li>
+
+<li class="li"> Functional test - Beacon outputs intermittently 2 patterns ("^Hello" and "Hello$") and 1 string to match ("Hello World " + count). </li>
+
+</ul>
+
+<p class="p"> The result: 
+</p>
+
+<ul class="ul">
+<li class="li"> Hello World 0,true </li>
+
+<li class="li"> Hello World 1,false </li>
+
+<li class="li"> Hello World 2,true </li>
+
+<li class="li"> Hello World 3,false </li>
+
+</ul>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+</div>
+
+
+</body>
+</html>
