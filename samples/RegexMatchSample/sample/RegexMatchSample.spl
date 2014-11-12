@@ -4,15 +4,16 @@ use com.ibm.streamsx.regex.re2::RegexMatch;
 
 /**
 * RegexMatchSample
-* Run two separate streams:
-* 1. Performance test - Beacon shoots 10,000,000 tuples. No output.
-* 2. Functional test - Beacon outputs intermittently 2 patterns ("^Hello" and "Hello$") and 1 string to match ("Hello World " + count).
+* Run two separate streams: performance test and functional test.
+* 
+* * Performance test - Beacon shoots 10,000,000 tuples. No output.
+* * Functional test - Beacon outputs intermittently 2 patterns ("^Hello" and "Hello$") and 1 string to match ("Hello World " + count).
+* 
 * The result:
-*
-* Hello World 0,true
-* Hello World 1,false
-* Hello World 2,true
-* Hello World 3,false
+* * Hello World 0,true
+* * Hello World 1,false
+* * Hello World 2,true
+* * Hello World 3,false
 */
 composite RegexMatchSample {
 	graph
