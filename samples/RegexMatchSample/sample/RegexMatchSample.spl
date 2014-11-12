@@ -2,6 +2,18 @@ namespace sample;
 
 use com.ibm.streamsx.regex.re2::RegexMatch;
 
+/**
+* RegexMatchSample
+* Run two separate streams:
+* 1. Performance test - Beacon shoots 10,000,000 tuples. No output.
+* 2. Functional test - Beacon outputs intermittently 2 patterns ("^Hello" and "Hello$") and 1 string to match ("Hello World " + count).
+* The result:
+*
+* Hello World 0,true
+* Hello World 1,false
+* Hello World 2,true
+* Hello World 3,false
+*/
 composite RegexMatchSample {
 	graph
 		(stream<rstring str> Beacon_1_out0)as Beacon_1 = Beacon(){
@@ -13,7 +25,7 @@ composite RegexMatchSample {
 
 		(stream<rstring str, rstring pattern> Beacon_2_out0)as Beacon_2 = Beacon(){
 			param
-				iterations : 10 ;
+				iterations : 4 ;
 			output
 				Beacon_2_out0 :
 					pattern = (int32)IterationCount() % 2 == 0 ? "^Hello" : "Hello$",
