@@ -3,7 +3,21 @@
  xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
  <info:identity>
    <info:name>com.ibm.streamsx.regex</info:name>
-   <info:description></info:description>
+    <info:description>
+Support for [http://code.google.com/p/re2|RE2] regular expression library.
+
+RE2 is a fast, safe, thread-friendly alternative to backtracking regular expression engines like those used in PCRE, Perl, and Python.
+RE2 uses [http://swtch.com/~rsc/regexp/regexp1.html|automata theory] to guarantee that regular expressions run in time linear in the size of the input.
+
+This toolkit provides several operators and native finctions to run RE2 engine in compilation or interpretation mode.
+* Compilation mode: The regex is compiled  and executed on the first call, then directly executed on the subsequent calls.
+* Interpretation mode: The regex is interpreted on each call.
+
+Each operator/native function implements partial or full regex match.
+
+**Third-party libraries**
+* This toolkit embeds RE2 headers/libraries under impl/&lt;include|lib&gt;.
+    </info:description>
    <info:version>1.0.0</info:version>
    <info:requiredProductVersion>3.1.0</info:requiredProductVersion>
  </info:identity>

@@ -2,32 +2,37 @@
 <operatorModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
   <cppOperatorModel>
     <context>
-      <description></description>
+      <description>
+RegexMatch operator has three custom output functions: 
+* RegexSimpleMatch performs a partial match and runs in interpretation mode (like SPL regexMatch function).
+* RegexPartialMatch performs a partial match and runs in compilation mode.
+* RegexFullMatch performs a full match and runs in compilation mode.
+</description>
       <customOutputFunctions>
         <customOutputFunction>
           <name>RegexFS</name>
           <function pseudoFunction="true">
-            <description></description>
+            <description>Assign value to the output attribute.</description>
             <prototype>&lt;any T> T AsIs(T v)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>Tries to match the whole string with the pattern (defined as the operator parameter).</description>
             <prototype>boolean RegexFullMatch(rstring str)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>Tries to match the whole string with the pattern.</description>
             <prototype>boolean RegexFullMatch(rstring str, rstring pattern)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
             <prototype>boolean RegexPartialMatch(rstring str)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>Tries to match the string with the pattern.</description>
             <prototype>boolean RegexPartialMatch(rstring str, rstring pattern)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>Tries to match the string with the pattern.</description>
             <prototype>boolean RegexSimpleMatch(rstring str, rstring pattern)</prototype>
           </function>
         </customOutputFunction>
@@ -51,7 +56,7 @@
       <allowAny>false</allowAny>
       <parameter>
         <name>pattern</name>
-        <description></description>
+        <description>The optional 'rstring' parameter specifies the pattern to match.</description>
         <optional>true</optional>
         <rewriteAllowed>true</rewriteAllowed>
         <expressionMode>AttributeFree</expressionMode>
@@ -60,7 +65,7 @@
       </parameter>
       <parameter>
         <name>maxMemory</name>
-        <description></description>
+        <description>The optional 'int64' parameter specifies maxMemory to allocate in bytes.</description>
         <optional>true</optional>
         <rewriteAllowed>true</rewriteAllowed>
         <expressionMode>AttributeFree</expressionMode>
@@ -69,7 +74,7 @@
       </parameter>
       <parameter>
         <name>logErrors</name>
-        <description></description>
+        <description>The optional 'boolean' parameter specifies if error logging is enabled.</description>
         <optional>true</optional>
         <rewriteAllowed>true</rewriteAllowed>
         <expressionMode>AttributeFree</expressionMode>
@@ -79,7 +84,7 @@
     </parameters>
     <inputPorts>
       <inputPortSet>
-        <description/>
+        <description>The RegexMatch operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
         <windowingDescription/>
         <tupleMutationAllowed>false</tupleMutationAllowed>
         <windowingMode>NonWindowed</windowingMode>
@@ -90,7 +95,7 @@
     </inputPorts>
     <outputPorts>
       <outputPortSet>
-        <description/>
+        <description>The RegexMatch operator is configurable with one output port. The output port is mutating and their punctuation mode is Preserving.</description>
         <expressionMode>Expression</expressionMode>
         <autoAssignment>true</autoAssignment>
         <completeAssignment>true</completeAssignment>
