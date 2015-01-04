@@ -95,7 +95,7 @@ RegexMatch operator has three custom output functions:
     </inputPorts>
     <outputPorts>
       <outputPortSet>
-        <description>The RegexMatch operator is configurable with one output port. The output port is mutating and their punctuation mode is Preserving.</description>
+        <description>The RegexMatch operator is configurable with one output port. The output port is mutating and its punctuation mode is Preserving.</description>
         <expressionMode>Expression</expressionMode>
         <autoAssignment>true</autoAssignment>
         <completeAssignment>true</completeAssignment>

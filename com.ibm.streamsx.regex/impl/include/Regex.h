@@ -20,27 +20,27 @@ using namespace std;
 
 namespace regex {
 
-	RE2::Options& getRE2Options(int maxmem){
+	inline RE2::Options& getRE2Options(int maxmem){
 		static RE2::Options options;
 		options.set_log_errors(false);
 		options.set_max_mem(maxmem);
 		return options;
 	}
 
-	RE2& getRE2(const string & pattern, int maxmem){
+	inline RE2& getRE2(const string & pattern, int maxmem){
 		static RE2 regex(pattern, getRE2Options(maxmem));
 		return regex;
 	}
 
-	bool regexFullMatch(const string & str, const string & pattern="", int maxmem=1000000){
+	inline bool regexFullMatch(const string & str, const string & pattern="", int maxmem=1000000){
 		return RE2::FullMatch(str, getRE2(pattern, maxmem)) == 1;
 	}
 
-	bool regexPartialMatch(const string & str, const string & pattern="", int maxmem=1000000){
+	inline bool regexPartialMatch(const string & str, const string & pattern="", int maxmem=1000000){
 		return RE2::PartialMatch(str, getRE2(pattern, maxmem)) == 1;
 	}
 
-	bool regexSimpleMatch(const string & str, const string & pattern){
+	inline bool regexSimpleMatch(const string & str, const string & pattern){
 		return RE2::PartialMatch(str, pattern) == 1;
 	}
 }
