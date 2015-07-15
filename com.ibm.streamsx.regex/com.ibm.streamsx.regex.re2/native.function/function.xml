@@ -5,32 +5,28 @@
     <cppNamespaceName>regex</cppNamespaceName>
     <functions>
       <function>
-        <description>Tries to match the whole string with the pattern (overloaded version, called after the initial pattern is already compiled).</description>
-        <prototype>public boolean regexFullMatch(rstring str)</prototype>
+        <description>Compiles regex pattern and indexes it.</description>
+        <prototype>&lt;enum E> public boolean regexCompile(rstring pattern, E patternIndex)</prototype>
       </function>
       <function>
-        <description sampleUri="">Tries to match the whole string with the pattern.</description>
+        <description>Compiles regex pattern and indexes it, additionally allows to control max memory allocated.</description>
+        <prototype>&lt;enum E> public boolean regexCompile(rstring pattern, E patternIndex, int32 maxmem)</prototype>
+      </function>
+      <function>
+        <description>Tries to match the whole string with the pattern - doesn't use compiled regex.</description>
         <prototype>public boolean regexFullMatch(rstring str, rstring pattern)</prototype>
       </function>
       <function>
-        <description>Tries to match the whole string with the pattern (additionally allows to control max memory allocated).</description>
-        <prototype>public boolean regexFullMatch(rstring str, rstring pattern, int32 maxmem)</prototype>
+        <description>Tries to match the whole string with the pattern - uses compiled regex by it's index.</description>
+        <prototype>&lt;enum E> public boolean regexFullMatch(rstring str, E patternIndex)</prototype>
       </function>
       <function>
-        <description>Tries to match the string with the pattern (overloaded version, called after the initial pattern is already compiled).</description>
-        <prototype>public boolean regexPartialMatch(rstring str)</prototype>
-      </function>
-      <function>
-        <description>Tries to match the string with the pattern.</description>
+        <description>Tries to match the string with the pattern - doesn't use compiled regex.</description>
         <prototype>public boolean regexPartialMatch(rstring str, rstring pattern)</prototype>
       </function>
       <function>
-        <description>Tries to match the string with the pattern (additionally allows to control max memory allocated).</description>
-        <prototype>public boolean regexPartialMatch(rstring str, rstring pattern, int32 maxmem)</prototype>
-      </function>
-      <function>
-        <description>Tries to match the string with the pattern.</description>
-        <prototype>public boolean regexSimpleMatch(rstring str, rstring pattern)</prototype>
+        <description>Tries to match the string with the pattern - uses compiled regex by it's index.</description>
+        <prototype>&lt;enum E> public boolean regexPartialMatch(rstring str, E patternIndex)</prototype>
       </function>
     </functions>
     <dependencies>

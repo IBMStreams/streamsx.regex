@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="3.2.1.1" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <toolkit name="com.ibm.streamsx.regex" requiredProductVersion="3.1.0" version="1.0.0">
-    <description/>
+  <toolkit name="com.ibm.streamsx.regex" requiredProductVersion="3.2.1" version="1.2.0">
+    <description>
+Support for [http://code.google.com/p/re2|RE2] regular expression library.
+
+RE2 is a fast, safe, thread-friendly alternative to backtracking regular expression engines like those used in PCRE, Perl, and Python.
+RE2 uses [http://swtch.com/~rsc/regexp/regexp1.html|automata theory] to guarantee that regular expressions run in time linear in the size of the input.
+
+This toolkit provides several operators and native finctions to run RE2 engine in compilation or interpretation mode.
+* Compilation mode: The regex is compiled  and executed on the first call, then directly executed on the subsequent calls.
+* Interpretation mode: The regex is interpreted on each call.
+
+Each operator/native function implements partial or full regex match.
+
+**Third-party libraries**
+* This toolkit embeds RE2 headers/libraries under impl/&lt;include|lib&gt;.
+    </description>
     <uriTable>
-      <uri index="2" value="com.ibm.streamsx.regex.re2/RegexMatchFused"/>
-      <uri index="3" value="com.ibm.streamsx.regex.re2/RegexMatch"/>
-      <uri index="1" value="com.ibm.streamsx.regex.re2/native.function/function.xml"/>
+      <uri index="3" value="com.ibm.streamsx.regex.re2/RegexMatchFused"/>
+      <uri index="4" value="com.ibm.streamsx.regex.re2/RegexMatch"/>
+      <uri index="2" value="com.ibm.streamsx.regex.re2/native.function/function.xml"/>
+      <uri index="1" value="com.ibm.streamsx.regex.re2/Types.spl"/>
     </uriTable>
     <namespace name="com.ibm.streamsx.regex.re2">
-      <primitiveOp language="Cpp" modelUriIndex="2" name="RegexMatchFused" public="true">
-        <description/>
+      <primitiveOp language="Cpp" modelUriIndex="3" name="RegexMatchFused" public="true">
+        <description>
+RegexMatchFused operator must run collocated with the calling operator.
+The calling operator must have mutating output port (like Custom or Functor operators).
+
+Depending on regexFunction parameter value RegexMatchFused will run one of the following regex functions:
+* regexSimpleMatch performs a partial match and runs in interpretation mode (like SPL regexMatch function).
+* regexPartialMatch performs a partial match and runs in compilation mode.
+* regexFullMatch performs a full match and runs in compilation mode.
+</description>
         <customLiterals name="regexTypes">
           <value name="regexFullMatch"/>
           <value name="regexPartialMatch"/>
@@ -18,63 +41,68 @@
         </customLiterals>
         <parametersDescription/>
         <parameter cardinality="1" expressionMode="Expression" name="pattern" optional="true" type="rstring">
-          <description/>
+          <description>The optional 'rstring' parameter specifies the pattern to match.</description>
         </parameter>
         <parameter cardinality="1" expressionMode="Expression" name="maxMemory" optional="true" type="uint64">
-          <description/>
+          <description>The optional 'int64' parameter specifies maxMemory to allocate in bytes.</description>
         </parameter>
         <parameter cardinality="1" expressionMode="Expression" name="logErrors" optional="true" type="boolean">
-          <description/>
+          <description>The optional 'boolean' parameter specifies if error logging is enabled.</description>
         </parameter>
         <parameter cardinality="1" expressionMode="CustomLiteral" name="regexFunction" optional="false" type="regexTypes">
-          <description/>
+          <description>Mandatory 'regexTypes' custom literal parameter specifies which regex function to call.</description>
         </parameter>
         <parameter cardinality="1" expressionMode="Attribute" name="patternAttr" optional="true" type="rstring">
-          <description/>
+          <description>The optional 'attribute name' parameter specifies which input attribute holds the pattern to match.</description>
         </parameter>
         <parameter cardinality="1" expressionMode="Attribute" name="searchAttr" optional="false" type="rstring">
-          <description/>
+          <description>The mandatory 'attribute name' parameter specifies which input attribute holds the string to match.</description>
         </parameter>
         <parameter cardinality="1" expressionMode="Attribute" name="resultAttr" optional="false" type="boolean">
-          <description/>
+          <description>The mandatory 'attribute name' parameter specifies which input attribute gets the result.</description>
         </parameter>
         <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
-          <description/>
+          <description>The RegexMatchFused operator is configurable with a single input port. The input port is mutating and its punctuation mode is Oblivious.</description>
           <windowPolicy>NonWindowed</windowPolicy>
         </inputPort>
       </primitiveOp>
-      <primitiveOp language="Cpp" modelUriIndex="3" name="RegexMatch" public="true">
-        <description/>
+      <primitiveOp language="Cpp" modelUriIndex="4" name="RegexMatch" public="true">
+        <description>
+RegexMatch operator has three custom output functions: 
+* RegexSimpleMatch performs a partial match and runs in interpretation mode (like SPL regexMatch function).
+* RegexPartialMatch performs a partial match and runs in compilation mode.
+* RegexFullMatch performs a full match and runs in compilation mode.
+</description>
         <outputFunctions name="RegexFS">
           <function name="AsIs" returnType="T">
-            <description/>
+            <description>Assign value to the output attribute.</description>
             <prototype>&lt;any T&gt; T AsIs(T v)</prototype>
             <parameter name="v" type="T"/>
           </function>
           <function name="RegexFullMatch" returnType="boolean">
-            <description/>
+            <description>Tries to match the whole string with the pattern (defined as the operator parameter).</description>
             <prototype>boolean RegexFullMatch(rstring str)</prototype>
             <parameter name="str" type="rstring"/>
           </function>
           <function name="RegexFullMatch" returnType="boolean">
-            <description/>
+            <description>Tries to match the whole string with the pattern.</description>
             <prototype>boolean RegexFullMatch(rstring str, rstring pattern)</prototype>
             <parameter name="str" type="rstring"/>
             <parameter name="pattern" type="rstring"/>
           </function>
           <function name="RegexPartialMatch" returnType="boolean">
-            <description/>
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
             <prototype>boolean RegexPartialMatch(rstring str)</prototype>
             <parameter name="str" type="rstring"/>
           </function>
           <function name="RegexPartialMatch" returnType="boolean">
-            <description/>
+            <description>Tries to match the string with the pattern.</description>
             <prototype>boolean RegexPartialMatch(rstring str, rstring pattern)</prototype>
             <parameter name="str" type="rstring"/>
             <parameter name="pattern" type="rstring"/>
           </function>
           <function name="RegexSimpleMatch" returnType="boolean">
-            <description/>
+            <description>Tries to match the string with the pattern.</description>
             <prototype>boolean RegexSimpleMatch(rstring str, rstring pattern)</prototype>
             <parameter name="str" type="rstring"/>
             <parameter name="pattern" type="rstring"/>
@@ -82,59 +110,140 @@
         </outputFunctions>
         <parametersDescription/>
         <parameter cardinality="1" expressionMode="AttributeFree" name="pattern" optional="true" type="rstring">
-          <description/>
+          <description>The optional 'rstring' parameter specifies the pattern to match.</description>
         </parameter>
         <parameter cardinality="1" expressionMode="AttributeFree" name="maxMemory" optional="true" type="int64">
-          <description/>
+          <description>The optional 'int64' parameter specifies maxMemory to allocate in bytes.</description>
         </parameter>
         <parameter cardinality="1" expressionMode="AttributeFree" name="logErrors" optional="true" type="boolean">
-          <description/>
+          <description>The optional 'boolean' parameter specifies if error logging is enabled.</description>
         </parameter>
         <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
-          <description/>
+          <description>The RegexMatch operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
           <windowPolicy>NonWindowed</windowPolicy>
         </inputPort>
         <outputPort expressionMode="Expression" maxNumPorts="1" minNumPorts="1" optional="false" windowPunctOutputMode="Preserving">
-          <description/>
+          <description>The RegexMatch operator is configurable with one output port. The output port is mutating and its punctuation mode is Preserving.</description>
         </outputPort>
       </primitiveOp>
-      <function modelUriIndex="1" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>An example native function</description>
-        <prototype>public boolean regexFullMatch(rstring str)</prototype>
-        <parameter name="str" type="rstring"/>
+      <compositeOp column="18" line="3" name="RegexPattern" potentialMain="true" public="true" uriIndex="1">
+        <type column="10" line="5" name="type_1" static="true" type="enum { _1 }" uriIndex="1"/>
+        <type column="10" line="6" name="type_2" static="true" type="enum { _2 }" uriIndex="1"/>
+        <type column="10" line="7" name="type_3" static="true" type="enum { _3 }" uriIndex="1"/>
+        <type column="10" line="8" name="type_4" static="true" type="enum { _4 }" uriIndex="1"/>
+        <type column="10" line="9" name="type_5" static="true" type="enum { _5 }" uriIndex="1"/>
+        <type column="10" line="10" name="type_6" static="true" type="enum { _6 }" uriIndex="1"/>
+        <type column="10" line="11" name="type_7" static="true" type="enum { _7 }" uriIndex="1"/>
+        <type column="10" line="12" name="type_8" static="true" type="enum { _8 }" uriIndex="1"/>
+        <type column="10" line="13" name="type_9" static="true" type="enum { _9 }" uriIndex="1"/>
+        <type column="10" line="14" name="type_10" static="true" type="enum { _10 }" uriIndex="1"/>
+        <type column="10" line="15" name="type_11" static="true" type="enum { _11 }" uriIndex="1"/>
+        <type column="10" line="16" name="type_12" static="true" type="enum { _12 }" uriIndex="1"/>
+        <type column="10" line="17" name="type_13" static="true" type="enum { _13 }" uriIndex="1"/>
+        <type column="10" line="18" name="type_14" static="true" type="enum { _14 }" uriIndex="1"/>
+        <type column="10" line="19" name="type_15" static="true" type="enum { _15 }" uriIndex="1"/>
+        <type column="10" line="20" name="type_16" static="true" type="enum { _16 }" uriIndex="1"/>
+        <type column="10" line="21" name="type_17" static="true" type="enum { _17 }" uriIndex="1"/>
+        <type column="10" line="22" name="type_18" static="true" type="enum { _18 }" uriIndex="1"/>
+        <type column="10" line="23" name="type_19" static="true" type="enum { _19 }" uriIndex="1"/>
+        <type column="10" line="24" name="type_20" static="true" type="enum { _20 }" uriIndex="1"/>
+        <enumLiterals column="24" line="5" static="true" typeName="type_1" uriIndex="1">
+          <enum>_1</enum>
+        </enumLiterals>
+        <enumLiterals column="24" line="6" static="true" typeName="type_2" uriIndex="1">
+          <enum>_2</enum>
+        </enumLiterals>
+        <enumLiterals column="24" line="7" static="true" typeName="type_3" uriIndex="1">
+          <enum>_3</enum>
+        </enumLiterals>
+        <enumLiterals column="24" line="8" static="true" typeName="type_4" uriIndex="1">
+          <enum>_4</enum>
+        </enumLiterals>
+        <enumLiterals column="24" line="9" static="true" typeName="type_5" uriIndex="1">
+          <enum>_5</enum>
+        </enumLiterals>
+        <enumLiterals column="24" line="10" static="true" typeName="type_6" uriIndex="1">
+          <enum>_6</enum>
+        </enumLiterals>
+        <enumLiterals column="24" line="11" static="true" typeName="type_7" uriIndex="1">
+          <enum>_7</enum>
+        </enumLiterals>
+        <enumLiterals column="24" line="12" static="true" typeName="type_8" uriIndex="1">
+          <enum>_8</enum>
+        </enumLiterals>
+        <enumLiterals column="24" line="13" static="true" typeName="type_9" uriIndex="1">
+          <enum>_9</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="14" static="true" typeName="type_10" uriIndex="1">
+          <enum>_10</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="15" static="true" typeName="type_11" uriIndex="1">
+          <enum>_11</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="16" static="true" typeName="type_12" uriIndex="1">
+          <enum>_12</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="17" static="true" typeName="type_13" uriIndex="1">
+          <enum>_13</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="18" static="true" typeName="type_14" uriIndex="1">
+          <enum>_14</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="19" static="true" typeName="type_15" uriIndex="1">
+          <enum>_15</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="20" static="true" typeName="type_16" uriIndex="1">
+          <enum>_16</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="21" static="true" typeName="type_17" uriIndex="1">
+          <enum>_17</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="22" static="true" typeName="type_18" uriIndex="1">
+          <enum>_18</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="23" static="true" typeName="type_19" uriIndex="1">
+          <enum>_19</enum>
+        </enumLiterals>
+        <enumLiterals column="25" line="24" static="true" typeName="type_20" uriIndex="1">
+          <enum>_20</enum>
+        </enumLiterals>
+      </compositeOp>
+      <function modelUriIndex="2" name="regexCompile" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Compiles regex pattern and indexes it.</description>
+        <prototype>&lt;enum E&gt; public boolean regexCompile(rstring pattern, E patternIndex)</prototype>
+        <parameter name="pattern" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
       </function>
-      <function modelUriIndex="1" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>An example native function</description>
+      <function modelUriIndex="2" name="regexCompile" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Compiles regex pattern and indexes it, additionally allows to control max memory allocated.</description>
+        <prototype>&lt;enum E&gt; public boolean regexCompile(rstring pattern, E patternIndex, int32 maxmem)</prototype>
+        <parameter name="pattern" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+        <parameter name="maxmem" type="int32"/>
+      </function>
+      <function modelUriIndex="2" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Tries to match the whole string with the pattern - doesn't use compiled regex.</description>
         <prototype>public boolean regexFullMatch(rstring str, rstring pattern)</prototype>
         <parameter name="str" type="rstring"/>
         <parameter name="pattern" type="rstring"/>
       </function>
-      <function modelUriIndex="1" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>An example native function</description>
-        <prototype>public boolean regexFullMatch(rstring str, rstring pattern, int32 maxmem)</prototype>
+      <function modelUriIndex="2" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Tries to match the whole string with the pattern - uses compiled regex by it's index.</description>
+        <prototype>&lt;enum E&gt; public boolean regexFullMatch(rstring str, E patternIndex)</prototype>
         <parameter name="str" type="rstring"/>
-        <parameter name="pattern" type="rstring"/>
-        <parameter name="maxmem" type="int32"/>
+        <parameter name="patternIndex" type="E"/>
       </function>
-      <function modelUriIndex="1" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <prototype>public boolean regexPartialMatch(rstring str)</prototype>
-        <parameter name="str" type="rstring"/>
-      </function>
-      <function modelUriIndex="1" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+      <function modelUriIndex="2" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Tries to match the string with the pattern - doesn't use compiled regex.</description>
         <prototype>public boolean regexPartialMatch(rstring str, rstring pattern)</prototype>
         <parameter name="str" type="rstring"/>
         <parameter name="pattern" type="rstring"/>
       </function>
-      <function modelUriIndex="1" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <prototype>public boolean regexPartialMatch(rstring str, rstring pattern, int32 maxmem)</prototype>
+      <function modelUriIndex="2" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Tries to match the string with the pattern - uses compiled regex by it's index.</description>
+        <prototype>&lt;enum E&gt; public boolean regexPartialMatch(rstring str, E patternIndex)</prototype>
         <parameter name="str" type="rstring"/>
-        <parameter name="pattern" type="rstring"/>
-        <parameter name="maxmem" type="int32"/>
-      </function>
-      <function modelUriIndex="1" name="regexSimpleMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <prototype>public boolean regexSimpleMatch(rstring str, rstring pattern)</prototype>
-        <parameter name="str" type="rstring"/>
-        <parameter name="pattern" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
       </function>
     </namespace>
   </toolkit>
