@@ -5,49 +5,44 @@ use com.ibm.streamsx.regex.re2::*;
 /**
 * Run functional tests using native functions.
 * 
-* * Functional tests for simple, partial and full matches.
+* * Functional tests for interpreted and compiled partial/full matches.
 * 
 * The output:
-* * regexSimpleMatch: 'Hello world' matches '^Hello': true
-* * regexSimpleMatch: 'Hello world' matches 'Hello$': false
 * * regexPartialMatch: 'Hello world' matches '^Hello': true
+* * regexFullMatch: 'Hello world' matches '^Hello': true
 * * regexPartialMatch: 'Hello world' matches '^Hello': true
-* * regexPartialMatch: 'Hello world' matches 'Hello$': true
 * * regexFullMatch: 'Hello world' matches '^Hello': false
-* * regexFullMatch: 'Hello world' matches '^Hello world': false
+* * regexFullMatch: 'Hello world' matches 'Hello world$': true
 */
 composite RegexMatchNFSample {
 	graph
 		()as Custom_1 = Custom(){
 			logic
 				onProcess : {
-					// Simple partial match - regex pattern is interpreted on each call
-					// The usage is similar to SPL regex functions
-					printString("regexSimpleMatch: 'Hello world' matches '^Hello': ");
-					println(regexSimpleMatch("Hello world", "^Hello"));
-					
-					printString("regexSimpleMatch: 'Hello world' matches 'Hello$': ");
-					println(regexSimpleMatch("Hello world", "Hello$"));
+					// Compile and index regex pattern, additionally increase max memory allocated
+					regexCompile("^Hello", RegexPattern._1);
+					regexCompile("Hello world$", RegexPattern._2);
+					regexCompile(".*VERY_BIG_PATTERN.*", RegexPattern._3, 10000000);
 
-					// Fast partial match - regex pattern is compiled on the first call
-					// Each subsequent call will use the compiled version even if the new pattern given
+					// Simple partial match (similar to SPL regex functions) - regex pattern is interpreted on each call
 					printString("regexPartialMatch: 'Hello world' matches '^Hello': ");
 					println(regexPartialMatch("Hello world", "^Hello"));
 					
-					printString("regexPartialMatch: 'Hello world' matches '^Hello': ");
-					println(regexPartialMatch("Hello world"));
-					
-					printString("regexPartialMatch: 'Hello world' matches 'Hello$': ");
-					println(regexPartialMatch("Hello world", "Hello$")); // Still using compiled '^Hello' pattern
-
-					// Fast full match is similar to the partial match, but requires to match the whole string
-					// Existing regex pattern still applies as it was compiled on previous call
-					printString("regexFullMatch: 'Hello world' matches '^Hello': ");
-					println(regexFullMatch("Hello world"));
-					
+					// Simple full match (the whole string is matched) - regex pattern is interpreted on each call
 					printString("regexFullMatch: 'Hello world' matches '^Hello world': ");
-					println(regexFullMatch("Hello world", "^Hello world")); // new pattern is not used
+					println(regexFullMatch("Hello world", "^Hello world"));
 
+					// Fast partial match - compiled regex pattern 1 is used
+					printString("regexPartialMatch: 'Hello world' matches '^Hello': ");
+					println(regexPartialMatch("Hello world", RegexPattern._1));
+					
+					// Fast full match - compiled regex pattern 1 is used
+					printString("regexFullMatch: 'Hello world' matches '^Hello': ");
+					println(regexFullMatch("Hello world", RegexPattern._1));
+					
+					// Fast full match - compiled regex pattern 2 is used
+					printString("regexFullMatch: 'Hello world' matches 'Hello world$': ");
+					println(regexFullMatch("Hello world", RegexPattern._2));
 				}
 
 		}
