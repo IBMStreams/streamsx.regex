@@ -1,0 +1,25 @@
+namespace com.ibm.streamsx.regex.re2;
+
+public composite RegexPattern {
+	type
+		static type_1 = enum{_1};
+		static type_2 = enum{_2};
+		static type_3 = enum{_3};
+		static type_4 = enum{_4};
+		static type_5 = enum{_5};
+		static type_6 = enum{_6};
+		static type_7 = enum{_7};
+		static type_8 = enum{_8};
+		static type_9 = enum{_9};
+		static type_10 = enum{_10};
+		static type_11 = enum{_11};
+		static type_12 = enum{_12};
+		static type_13 = enum{_13};
+		static type_14 = enum{_14};
+		static type_15 = enum{_15};
+		static type_16 = enum{_16};
+		static type_17 = enum{_17};
+		static type_18 = enum{_18};
+		static type_19 = enum{_19};
+		static type_20 = enum{_20};
+}
