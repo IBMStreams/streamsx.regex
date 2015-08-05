@@ -18,55 +18,12 @@ Each operator/native function implements partial or full regex match.
 * This toolkit embeds RE2 headers/libraries under impl/&lt;include|lib&gt;.
     </description>
     <uriTable>
-      <uri index="3" value="com.ibm.streamsx.regex.re2/RegexMatchFused"/>
-      <uri index="4" value="com.ibm.streamsx.regex.re2/RegexMatch"/>
+      <uri index="3" value="com.ibm.streamsx.regex.re2/RegexMatch"/>
       <uri index="2" value="com.ibm.streamsx.regex.re2/native.function/function.xml"/>
       <uri index="1" value="com.ibm.streamsx.regex.re2/Types.spl"/>
     </uriTable>
     <namespace name="com.ibm.streamsx.regex.re2">
-      <primitiveOp language="Cpp" modelUriIndex="3" name="RegexMatchFused" public="true">
-        <description>
-RegexMatchFused operator must run collocated with the calling operator.
-The calling operator must have mutating output port (like Custom or Functor operators).
-
-Depending on regexFunction parameter value RegexMatchFused will run one of the following regex functions:
-* regexSimpleMatch performs a partial match and runs in interpretation mode (like SPL regexMatch function).
-* regexPartialMatch performs a partial match and runs in compilation mode.
-* regexFullMatch performs a full match and runs in compilation mode.
-</description>
-        <customLiterals name="regexTypes">
-          <value name="regexFullMatch"/>
-          <value name="regexPartialMatch"/>
-          <value name="regexSimpleMatch"/>
-        </customLiterals>
-        <parametersDescription/>
-        <parameter cardinality="1" expressionMode="Expression" name="pattern" optional="true" type="rstring">
-          <description>The optional 'rstring' parameter specifies the pattern to match.</description>
-        </parameter>
-        <parameter cardinality="1" expressionMode="Expression" name="maxMemory" optional="true" type="uint64">
-          <description>The optional 'int64' parameter specifies maxMemory to allocate in bytes.</description>
-        </parameter>
-        <parameter cardinality="1" expressionMode="Expression" name="logErrors" optional="true" type="boolean">
-          <description>The optional 'boolean' parameter specifies if error logging is enabled.</description>
-        </parameter>
-        <parameter cardinality="1" expressionMode="CustomLiteral" name="regexFunction" optional="false" type="regexTypes">
-          <description>Mandatory 'regexTypes' custom literal parameter specifies which regex function to call.</description>
-        </parameter>
-        <parameter cardinality="1" expressionMode="Attribute" name="patternAttr" optional="true" type="rstring">
-          <description>The optional 'attribute name' parameter specifies which input attribute holds the pattern to match.</description>
-        </parameter>
-        <parameter cardinality="1" expressionMode="Attribute" name="searchAttr" optional="false" type="rstring">
-          <description>The mandatory 'attribute name' parameter specifies which input attribute holds the string to match.</description>
-        </parameter>
-        <parameter cardinality="1" expressionMode="Attribute" name="resultAttr" optional="false" type="boolean">
-          <description>The mandatory 'attribute name' parameter specifies which input attribute gets the result.</description>
-        </parameter>
-        <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
-          <description>The RegexMatchFused operator is configurable with a single input port. The input port is mutating and its punctuation mode is Oblivious.</description>
-          <windowPolicy>NonWindowed</windowPolicy>
-        </inputPort>
-      </primitiveOp>
-      <primitiveOp language="Cpp" modelUriIndex="4" name="RegexMatch" public="true">
+      <primitiveOp language="Cpp" modelUriIndex="3" name="RegexMatch" public="true">
         <description>
 RegexMatch operator has three custom output functions: 
 * RegexSimpleMatch performs a partial match and runs in interpretation mode (like SPL regexMatch function).
