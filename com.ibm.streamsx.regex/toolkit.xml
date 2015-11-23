@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.0.0.0" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.0.1.0" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <toolkit name="com.ibm.streamsx.regex" requiredProductVersion="4.0.0" version="1.4.0">
     <description>
@@ -178,6 +178,19 @@ RegexMatch operator has three custom output functions:
         <parameter name="patternIndex" type="E"/>
         <parameter name="maxmem" type="int32"/>
       </function>
+      <function modelUriIndex="2" name="regexCompileStatic" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Compiles regex pattern and indexes it - static version</description>
+        <prototype>&lt;enum E&gt; public boolean regexCompileStatic(rstring pattern, E patternIndex)</prototype>
+        <parameter name="pattern" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+      </function>
+      <function modelUriIndex="2" name="regexCompileStatic" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Compiles regex pattern and indexes it - static version, additionally allows to control max memory allocated.</description>
+        <prototype>&lt;enum E&gt; public boolean regexCompileStatic(rstring pattern, E patternIndex, int32 maxmem)</prototype>
+        <parameter name="pattern" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+        <parameter name="maxmem" type="int32"/>
+      </function>
       <function modelUriIndex="2" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
         <description>Tries to match the whole string with the pattern - doesn't use compiled regex.</description>
         <prototype>public boolean regexFullMatch(rstring str, rstring pattern)</prototype>
@@ -190,6 +203,12 @@ RegexMatch operator has three custom output functions:
         <parameter name="str" type="rstring"/>
         <parameter name="patternIndex" type="E"/>
       </function>
+      <function modelUriIndex="2" name="regexFullMatchStatic" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Tries to match the whole string with the pattern - static version, uses compiled regex by it's index.</description>
+        <prototype>&lt;enum E&gt; public boolean regexFullMatchStatic(rstring str, E patternIndex)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+      </function>
       <function modelUriIndex="2" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
         <description>Tries to match the string with the pattern - doesn't use compiled regex.</description>
         <prototype>public boolean regexPartialMatch(rstring str, rstring pattern)</prototype>
@@ -199,6 +218,12 @@ RegexMatch operator has three custom output functions:
       <function modelUriIndex="2" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
         <description>Tries to match the string with the pattern - uses compiled regex by it's index.</description>
         <prototype>&lt;enum E&gt; public boolean regexPartialMatch(rstring str, E patternIndex)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+      </function>
+      <function modelUriIndex="2" name="regexPartialMatchStatic" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>Tries to match the string with the pattern - static version, uses compiled regex by it's index.</description>
+        <prototype>&lt;enum E&gt; public boolean regexPartialMatchStatic(rstring str, E patternIndex)</prototype>
         <parameter name="str" type="rstring"/>
         <parameter name="patternIndex" type="E"/>
       </function>
