@@ -1,7 +1,7 @@
 /*
  * Regex.h
  *
- *  Created on: Nov 27, 2011
+ *  Created on: Nov 27, 2014
  *      Author: leonid.gorelik
  */
 
@@ -9,11 +9,9 @@
 #define REGEX_H_
 
 #include <iostream>
-#include <string>
 #include "sys/time.h"
-// Define RE2 regular expression engine
 #include "re2/re2.h"
-// Define SPL types and functions.
+
 #include "SPL/Runtime/Function/SPLFunctions.h"
 
 using namespace std;
@@ -41,14 +39,14 @@ namespace regex {
 	}
 
 	template<typename Index, typename OP>
-	inline RE2& getRE2(const string & pattern="", int maxmem=1000000){
-		static RE2 regex(pattern, getRE2Options<Index,OP>(maxmem));
+	inline RE2& getRE2(const SPL::rstring & pattern="", int maxmem=1000000){
+		static RE2 regex(re2::StringPiece(pattern.data(), pattern.size()), getRE2Options<Index,OP>(maxmem));
 		return regex;
 	}
 
 	template<typename Index>
-	inline RE2& getRE2Static(const string & pattern="", int maxmem=1000000){
-		static RE2 regex(pattern, getRE2OptionsStatic<Index>(maxmem));
+	inline RE2& getRE2Static(const SPL::rstring & pattern="", int maxmem=1000000){
+		static RE2 regex(re2::StringPiece(pattern.data(), pattern.size()), getRE2OptionsStatic<Index>(maxmem));
 		return regex;
 	}
 
@@ -62,32 +60,32 @@ namespace regex {
 		getRE2Static<Index>(pattern, maxmem);
 	}
 
-	inline bool regexFullMatch(const string & str, const SPL::rstring & pattern){
-		return RE2::FullMatch(str, pattern) == 1;
+	inline bool regexFullMatch(const SPL::rstring & str, const SPL::rstring & pattern){
+		return RE2::FullMatch(re2::StringPiece(str.data(), str.size()), re2::StringPiece(pattern.data(), pattern.size())) == 1;
 	}
 
 	template<typename Index>
-	inline bool regexFullMatch(const string & str, const Index & patternIndex){
-		return RE2::FullMatch(str, getRE2<Index,OperatorInstance>()) == 1;
+	inline bool regexFullMatch(const SPL::rstring & str, const Index & patternIndex){
+		return RE2::FullMatch(re2::StringPiece(str.data(), str.size()), getRE2<Index,OperatorInstance>()) == 1;
 	}
 
 	template<typename Index>
-	inline bool regexFullMatchStatic(const string & str, const Index & patternIndex){
-		return RE2::FullMatch(str, getRE2Static<Index>()) == 1;
+	inline bool regexFullMatchStatic(const SPL::rstring & str, const Index & patternIndex){
+		return RE2::FullMatch(re2::StringPiece(str.data(), str.size()), getRE2Static<Index>()) == 1;
 	}
 
-	inline bool regexPartialMatch(const string & str, const SPL::rstring & pattern){
-		return RE2::PartialMatch(str, pattern) == 1;
-	}
-
-	template<typename Index>
-	inline bool regexPartialMatch(const string & str, const Index & patternIndex){
-		return RE2::PartialMatch(str, getRE2<Index,OperatorInstance>()) == 1;
+	inline bool regexPartialMatch(const SPL::rstring & str, const SPL::rstring & pattern){
+		return RE2::PartialMatch(re2::StringPiece(str.data(), str.size()), re2::StringPiece(pattern.data(), pattern.size())) == 1;
 	}
 
 	template<typename Index>
-	inline bool regexPartialMatchStatic(const string & str, const Index & patternIndex){
-		return RE2::PartialMatch(str, getRE2Static<Index>()) == 1;
+	inline bool regexPartialMatch(const SPL::rstring & str, const Index & patternIndex){
+		return RE2::PartialMatch(re2::StringPiece(str.data(), str.size()), getRE2<Index,OperatorInstance>()) == 1;
+	}
+
+	template<typename Index>
+	inline bool regexPartialMatchStatic(const SPL::rstring & str, const Index & patternIndex){
+		return RE2::PartialMatch(re2::StringPiece(str.data(), str.size()), getRE2Static<Index>()) == 1;
 	}
 }
 
