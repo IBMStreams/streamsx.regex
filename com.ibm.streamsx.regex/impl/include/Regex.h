@@ -23,7 +23,7 @@ namespace regex {
 	}
 
 	template<typename Index, typename OP>
-	inline RE2::Options& getRE2Options(int maxmem){
+	inline RE2::Options& getRE2Options(long maxmem){
 		static RE2::Options options;
 		options.set_log_errors(true);
 		options.set_max_mem(maxmem);
@@ -31,7 +31,7 @@ namespace regex {
 	}
 
 	template<typename Index>
-	inline RE2::Options& getRE2OptionsStatic(int maxmem){
+	inline RE2::Options& getRE2OptionsStatic(long maxmem){
 		static RE2::Options options;
 		options.set_log_errors(true);
 		options.set_max_mem(maxmem);
@@ -39,24 +39,24 @@ namespace regex {
 	}
 
 	template<typename Index, typename OP>
-	inline RE2& getRE2(const SPL::rstring & pattern="", int maxmem=1000000){
+	inline RE2& getRE2(const SPL::rstring & pattern="", long maxmem=1000000){
 		static RE2 regex(re2::StringPiece(pattern.data(), pattern.size()), getRE2Options<Index,OP>(maxmem));
 		return regex;
 	}
 
 	template<typename Index>
-	inline RE2& getRE2Static(const SPL::rstring & pattern="", int maxmem=1000000){
+	inline RE2& getRE2Static(const SPL::rstring & pattern="", long maxmem=1000000){
 		static RE2 regex(re2::StringPiece(pattern.data(), pattern.size()), getRE2OptionsStatic<Index>(maxmem));
 		return regex;
 	}
 
 	template<typename Index>
-	inline void regexCompile(const SPL::rstring & pattern, const Index & patternIndex, int maxmem=1000000){
+	inline void regexCompile(const SPL::rstring & pattern, const Index & patternIndex, long maxmem=1000000){
 		getRE2<Index,OperatorInstance>(pattern, maxmem);
 	}
 
 	template<typename Index>
-	inline void regexCompileStatic(const SPL::rstring & pattern, const Index & patternIndex, int maxmem=1000000){
+	inline void regexCompileStatic(const SPL::rstring & pattern, const Index & patternIndex, long maxmem=1000000){
 		getRE2Static<Index>(pattern, maxmem);
 	}
 

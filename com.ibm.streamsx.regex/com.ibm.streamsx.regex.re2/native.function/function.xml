@@ -10,7 +10,7 @@
       </function>
       <function>
         <description>Compiles regex pattern and indexes it, additionally allows to control max memory allocated.</description>
-        <prototype>&lt;enum E> public boolean regexCompile(rstring pattern, E patternIndex, int32 maxmem)</prototype>
+        <prototype>&lt;enum E> public boolean regexCompile(rstring pattern, E patternIndex, int64 maxmem)</prototype>
       </function>
       <function>
         <description>Compiles regex pattern and indexes it - static version</description>
@@ -18,7 +18,7 @@
       </function>
       <function>
         <description>Compiles regex pattern and indexes it - static version, additionally allows to control max memory allocated.</description>
-        <prototype>&lt;enum E> public boolean regexCompileStatic(rstring pattern, E patternIndex, int32 maxmem)</prototype>
+        <prototype>&lt;enum E> public boolean regexCompileStatic(rstring pattern, E patternIndex, int64 maxmem)</prototype>
       </function>
       <function>
         <description>Tries to match the whole string with the pattern - doesn't use compiled regex.</description>
