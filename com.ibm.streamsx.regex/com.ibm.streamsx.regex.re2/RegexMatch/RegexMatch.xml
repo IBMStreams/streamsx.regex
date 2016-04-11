@@ -41,10 +41,9 @@ RegexMatch operator has three custom output functions:
         <library>
           <cmn:description></cmn:description>
           <cmn:managedLibrary>
-            <cmn:lib>re2</cmn:lib>
             <cmn:libPath>../../impl/lib</cmn:libPath>
             <cmn:includePath>../../impl/include</cmn:includePath>
-            <cmn:command></cmn:command>
+            <cmn:command>../../impl/bin/setLib.sh</cmn:command>
           </cmn:managedLibrary>
         </library>
       </libraryDependencies>
@@ -85,7 +84,7 @@ RegexMatch operator has three custom output functions:
     <inputPorts>
       <inputPortSet>
         <description>The RegexMatch operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
-        <windowingDescription/>
+        <windowingDescription></windowingDescription>
         <tupleMutationAllowed>false</tupleMutationAllowed>
         <windowingMode>NonWindowed</windowingMode>
         <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
