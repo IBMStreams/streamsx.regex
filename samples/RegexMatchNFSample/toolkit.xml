@@ -4,7 +4,6 @@
   <toolkit name="com.ibm.streamsx.regex.RegexMatchNFSample" requiredProductVersion="4.0" version="1.1.1">
     <description>Sample use of regex native functions.</description>
     <uriTable>
-      <uri index="2" value="sample/Main.spl"/>
       <uri index="1" value="sample/RegexMatchNFSample.spl"/>
     </uriTable>
     <namespace name="sample">

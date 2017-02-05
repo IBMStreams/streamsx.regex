@@ -29,10 +29,13 @@ private:
   OPort0Type * getOutputTuple();
 
   bool RegexFullMatch(const string & str);
+  bool RegexFullMatch(const blob & blb);
   bool RegexFullMatch(const string & str, const string & pattern);
+  bool RegexFullMatch(const blob & blb, const string & pattern);
   bool RegexPartialMatch(const string & str);
+  bool RegexPartialMatch(const blob & blb);
   bool RegexPartialMatch(const string & str, const string & pattern);
-  bool RegexSimpleMatch(const string & str, const string & pattern);
+  bool RegexPartialMatch(const blob & blb, const string & pattern);
 }; 
 
 <%SPL::CodeGen::headerEpilogue($model);%>

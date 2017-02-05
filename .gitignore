@@ -4,7 +4,6 @@ com.ibm.streamsx.regex/impl/include/boost
 com.ibm.streamsx.regex/samples
 samples/*/doc
 samples/*/output
-samples/*/toolkit.xml
 index.*
 # begin streamsx.regex excluded
 .classpath

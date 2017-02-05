@@ -4,9 +4,9 @@
     <context>
       <description>
 RegexMatch operator has three custom output functions: 
-* RegexSimpleMatch performs a partial match and runs in interpretation mode (like SPL regexMatch function).
-* RegexPartialMatch performs a partial match and runs in compilation mode.
-* RegexFullMatch performs a full match and runs in compilation mode.
+* RegexSimpleMatch performs a partial match - runs in interpretation mode (like SPL regexMatch function).
+* RegexPartialMatch performs a partial match - runs in compilation mode.
+* RegexFullMatch performs a full match - runs in compilation mode.
 </description>
       <customOutputFunctions>
         <customOutputFunction>
@@ -15,25 +15,45 @@ RegexMatch operator has three custom output functions:
             <description>Assign value to the output attribute.</description>
             <prototype>&lt;any T> T AsIs(T v)</prototype>
           </function>
-          <function pseudoFunction="true">
+          <function pseudoFunction="false">
             <description>Tries to match the whole string with the pattern (defined as the operator parameter).</description>
             <prototype>boolean RegexFullMatch(rstring str)</prototype>
           </function>
-          <function pseudoFunction="true">
+          <function pseudoFunction="false">
+            <description>Tries to match the whole blob with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexFullMatch(blob blb)</prototype>
+          </function>
+          <function pseudoFunction="false">
             <description>Tries to match the whole string with the pattern.</description>
             <prototype>boolean RegexFullMatch(rstring str, rstring pattern)</prototype>
           </function>
-          <function pseudoFunction="true">
+          <function pseudoFunction="false">
+            <description>Tries to match the whole blob with the pattern.</description>
+            <prototype>boolean RegexFullMatch(blob blb, rstring pattern)</prototype>
+          </function>
+          <function pseudoFunction="false">
             <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
             <prototype>boolean RegexPartialMatch(rstring str)</prototype>
           </function>
-          <function pseudoFunction="true">
+          <function pseudoFunction="false">
+            <description>Tries to match the blob with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexPartialMatch(blob blb)</prototype>
+          </function>
+          <function pseudoFunction="false">
             <description>Tries to match the string with the pattern.</description>
             <prototype>boolean RegexPartialMatch(rstring str, rstring pattern)</prototype>
           </function>
-          <function pseudoFunction="true">
+          <function pseudoFunction="false">
+            <description>Tries to match the blob with the pattern.</description>
+            <prototype>boolean RegexPartialMatch(blob blb, rstring pattern)</prototype>
+          </function>
+          <function pseudoFunction="false">
             <description>Tries to match the string with the pattern.</description>
             <prototype>boolean RegexSimpleMatch(rstring str, rstring pattern)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the blob with the pattern.</description>
+            <prototype>boolean RegexSimpleMatch(blob blb, rstring pattern)</prototype>
           </function>
         </customOutputFunction>
       </customOutputFunctions>

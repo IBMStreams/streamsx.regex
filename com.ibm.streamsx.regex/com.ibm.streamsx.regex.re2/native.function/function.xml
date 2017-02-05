@@ -5,43 +5,43 @@
     <cppNamespaceName>regex</cppNamespaceName>
     <functions>
       <function>
-        <description>Compiles regex pattern and indexes it.</description>
+        <description>Compiles and indexes regex pattern</description>
         <prototype>&lt;enum E> public boolean regexCompile(rstring pattern, E patternIndex)</prototype>
       </function>
       <function>
-        <description>Compiles regex pattern and indexes it, additionally allows to control max memory allocated.</description>
+        <description>Compiles and indexes regex pattern, additionally allows to control max memory allocated</description>
         <prototype>&lt;enum E> public boolean regexCompile(rstring pattern, E patternIndex, int64 maxmem)</prototype>
       </function>
       <function>
-        <description>Compiles regex pattern and indexes it - static version</description>
+        <description>Compiles and indexes regex pattern. This is a static version - a pattern is visible on PE level</description>
         <prototype>&lt;enum E> public boolean regexCompileStatic(rstring pattern, E patternIndex)</prototype>
       </function>
       <function>
-        <description>Compiles regex pattern and indexes it - static version, additionally allows to control max memory allocated.</description>
+        <description>Compiles and indexes regex pattern, additionally allows to control max memory allocated. This is a static version - a pattern is visible on PE level</description>
         <prototype>&lt;enum E> public boolean regexCompileStatic(rstring pattern, E patternIndex, int64 maxmem)</prototype>
       </function>
       <function>
-        <description>Tries to match the whole string with the pattern - doesn't use compiled regex.</description>
+        <description>Performs a full match of the whole string with the pattern - runs in interpretation mode (like SPL regexMatch function)</description>
         <prototype>public boolean regexFullMatch(rstring str, rstring pattern)</prototype>
       </function>
       <function>
-        <description>Tries to match the whole string with the pattern - uses compiled regex by it's index.</description>
+        <description>Performs a full match of the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern)</description>
         <prototype>&lt;enum E> public boolean regexFullMatch(rstring str, E patternIndex)</prototype>
       </function>
       <function>
-        <description>Tries to match the whole string with the pattern - static version, uses compiled regex by it's index.</description>
+        <description>Performs a full match of the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern). This is a static version - a pattern is visible on PE level</description>
         <prototype>&lt;enum E> public boolean regexFullMatchStatic(rstring str, E patternIndex)</prototype>
       </function>
       <function>
-        <description>Tries to match the string with the pattern - doesn't use compiled regex.</description>
+        <description>Performs a partial match of the string with the pattern - runs in interpretation mode (like SPL regexMatch function).</description>
         <prototype>public boolean regexPartialMatch(rstring str, rstring pattern)</prototype>
       </function>
       <function>
-        <description>Tries to match the string with the pattern - uses compiled regex by it's index.</description>
+        <description>Performs a partial match of the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern)</description>
         <prototype>&lt;enum E> public boolean regexPartialMatch(rstring str, E patternIndex)</prototype>
       </function>
       <function>
-        <description>Tries to match the string with the pattern - static version, uses compiled regex by it's index.</description>
+        <description>Performs a partial match of the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern). This is a static version - a pattern is visible on PE level</description>
         <prototype>&lt;enum E> public boolean regexPartialMatchStatic(rstring str, E patternIndex)</prototype>
       </function>
     </functions>
