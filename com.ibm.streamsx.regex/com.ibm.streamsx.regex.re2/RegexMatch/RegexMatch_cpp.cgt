@@ -10,7 +10,7 @@
 	my $maxMemory = ($_ = $model->getParameterByName('maxMemory')) ? $_->getValueAt(0)->getCppExpression() : 1000000;
 %>
 
-bool MY_OPERATOR::RegexFullMatch(const string & str) {
+bool MY_OPERATOR::RegexFullMatch(const rstring & str) {
 	return RE2::FullMatch(str, _regex) == 1;
 }
 
@@ -18,29 +18,29 @@ bool MY_OPERATOR::RegexFullMatch(const blob & blb) {
 	return RE2::FullMatch(re2::StringPiece(reinterpret_cast<const char*>(blb.getData()), blb.getSize()), _regex) == 1;
 }
 
-bool MY_OPERATOR::RegexFullMatch(const string & str, const string & pattern) {
+bool MY_OPERATOR::RegexFullMatch(const rstring & str, const rstring & pattern) {
 
 	AutoPortMutex am(_mutex, *this);
 	if(_regexMap.count(pattern) == 0) {
-		string pat = pattern;
+		rstring pat = pattern;
 		_regexMap.insert(pat, new RE2(pattern, _options));
 	}
 
 	return RE2::FullMatch(str, _regexMap.at(pattern)) == 1;
 }
 
-bool MY_OPERATOR::RegexFullMatch(const blob & blb, const string & pattern) {
+bool MY_OPERATOR::RegexFullMatch(const blob & blb, const rstring & pattern) {
 
 	AutoPortMutex am(_mutex, *this);
 	if(_regexMap.count(pattern) == 0) {
-		string pat = pattern;
+		rstring pat = pattern;
 		_regexMap.insert(pat, new RE2(pattern, _options));
 	}
 
 	return RE2::FullMatch(re2::StringPiece(reinterpret_cast<const char*>(blb.getData()), blb.getSize()), _regexMap.at(pattern)) == 1;
 }
 
-bool MY_OPERATOR::RegexPartialMatch(const string & str) {
+bool MY_OPERATOR::RegexPartialMatch(const rstring & str) {
 	return RE2::PartialMatch(str, _regex) == 1;
 }
 
@@ -48,33 +48,33 @@ bool MY_OPERATOR::RegexPartialMatch(const blob & blb) {
 	return RE2::PartialMatch(re2::StringPiece(reinterpret_cast<const char*>(blb.getData()), blb.getSize()), _regex) == 1;
 }
 
-bool MY_OPERATOR::RegexPartialMatch(const string & str, const string & pattern) {
+bool MY_OPERATOR::RegexPartialMatch(const rstring & str, const rstring & pattern) {
 
 	AutoPortMutex am(_mutex, *this);
 	if(_regexMap.count(pattern) == 0) {
-		string pat = pattern;
+		rstring pat = pattern;
 		_regexMap.insert(pat, new RE2(pattern, _options));
 	}
 
 	return RE2::PartialMatch(str, _regexMap.at(pattern)) == 1;
 }
 
-bool MY_OPERATOR::RegexPartialMatch(const blob & blb, const string & pattern) {
+bool MY_OPERATOR::RegexPartialMatch(const blob & blb, const rstring & pattern) {
 
 	AutoPortMutex am(_mutex, *this);
 	if(_regexMap.count(pattern) == 0) {
-		string pat = pattern;
+		rstring pat = pattern;
 		_regexMap.insert(pat, new RE2(pattern, _options));
 	}
 
 	return RE2::PartialMatch(re2::StringPiece(reinterpret_cast<const char*>(blb.getData()), blb.getSize()), _regexMap.at(pattern)) == 1;
 }
 
-bool MY_OPERATOR::RegexSimpleMatch(const string & str, const string & pattern) {
+bool MY_OPERATOR::RegexSimpleMatch(const rstring & str, const rstring & pattern) {
 	return RE2::PartialMatch(str, pattern) == 1;
 }
 
-bool MY_OPERATOR::RegexSimpleMatch(const blob & blb, const string & pattern) {
+bool MY_OPERATOR::RegexSimpleMatch(const blob & blb, const rstring & pattern) {
 	return RE2::PartialMatch(re2::StringPiece(reinterpret_cast<const char*>(blb.getData()), blb.getSize()), pattern) == 1;
 }
 

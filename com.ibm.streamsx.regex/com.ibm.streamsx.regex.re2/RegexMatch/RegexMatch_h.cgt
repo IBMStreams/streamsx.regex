@@ -1,4 +1,3 @@
-#include <string>
 #include <streams_boost/ptr_container/ptr_unordered_map.hpp>
 #include <streams_boost/thread/tss.hpp>
 #include "re2/re2.h"
@@ -23,19 +22,21 @@ private:
   RE2 _regex;
 
   Mutex _mutex;
-  ptr_unordered_map<string,RE2> _regexMap;
+  ptr_unordered_map<rstring,RE2> _regexMap;
   static thread_specific_ptr<OPort0Type> otuplePtr_;
 
   OPort0Type * getOutputTuple();
 
-  bool RegexFullMatch(const string & str);
+  bool RegexFullMatch(const rstring & str);
   bool RegexFullMatch(const blob & blb);
-  bool RegexFullMatch(const string & str, const string & pattern);
-  bool RegexFullMatch(const blob & blb, const string & pattern);
-  bool RegexPartialMatch(const string & str);
+  bool RegexFullMatch(const rstring & str, const rstring & pattern);
+  bool RegexFullMatch(const blob & blb, const rstring & pattern);
+  bool RegexPartialMatch(const rstring & str);
   bool RegexPartialMatch(const blob & blb);
-  bool RegexPartialMatch(const string & str, const string & pattern);
-  bool RegexPartialMatch(const blob & blb, const string & pattern);
+  bool RegexPartialMatch(const rstring & str, const rstring & pattern);
+  bool RegexPartialMatch(const blob & blb, const rstring & pattern);
+  bool RegexSimpleMatch(const rstring & str, const rstring & pattern);
+  bool RegexSimpleMatch(const blob & blb, const rstring & pattern);
 }; 
 
 <%SPL::CodeGen::headerEpilogue($model);%>

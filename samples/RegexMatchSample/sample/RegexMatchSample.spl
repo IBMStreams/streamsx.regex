@@ -33,8 +33,7 @@ composite RegexMatchSample {
 		}
 
 		// Matching string with precompiled regex pattern (from parameter)
-		(stream<rstring str, boolean result> RegexMatch_2_out0)as
-			RegexMatch_2 = RegexMatch(Beacon_1_out0){
+		(stream<rstring str, boolean result> RegexMatch_2_out0) as RegexMatch_2 = RegexMatch(Beacon_1_out0){
 			param
 				pattern : "^Hello" ;
 			output
@@ -42,8 +41,7 @@ composite RegexMatchSample {
 		}
 
 		// Matching string with updated precompiled regex pattern (from input attribute)
-		(stream<rstring str, boolean result> RegexMatch_3_out0)as
-			RegexMatch_3 = RegexMatch(Beacon_2_out0){
+		(stream<rstring str, boolean result> RegexMatch_3_out0) as RegexMatch_3 = RegexMatch(Beacon_2_out0){
 			output
 				RegexMatch_3_out0 : result = RegexPartialMatch(str, pattern);
 		}
