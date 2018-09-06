@@ -15,11 +15,10 @@ use com.ibm.streamsx.regex.re2::*;
 * * regexFullMatch: 'Hello world' matches '^Hello': false
 * * regexFullMatch: 'Hello world' matches 'Hello world$': true
 * * regexPartialMatch 2: 'Hello world' matches '': true
-* * WARN #splapptrc,J[0],P[0],Custom_2,REGEX M[Regex_re2.h:getRE2Options:28]  - "Regular expression '' is empty, possibly 'regexCompile' was not called before."
-* * ERROR #splapplog,J[0],P[0],Custom_3,spl_pe M[PEImpl.cpp:logTerminatingException:1988]  - CDISR5033E: An exception occurred during the execution of the Custom_3 operator. Processing element number 0 is terminating.
-* * ERROR #splapptrc,J[0],P[0],Custom_3,#splapptrc,J[0],P[0],Custom_3,spl_operator M[PEImpl.cpp:handleOperatorFailure:596]  - CDISR5030E: An exception occurred during the execution of the Custom_3 operator. The exception is: "Regular expression '[' failed to compile - missing ]: ["
-* * ERROR #splapptrc,J[0],P[0],Custom_2,spl_operator M[PEImpl.cpp:process:1367]  - CDISR5053E: Runtime failures occurred in the following operators: Custom_3.
-
+* * WARN ... "Regular expression '' is empty, possibly 'regexCompile' was not called before."
+* * ERROR ... CDISR5033E: An exception occurred during the execution of the Custom_3 operator. Processing element number 0 is terminating.
+* * ERROR ... CDISR5030E: An exception occurred during the execution of the Custom_3 operator. The exception is: "Regular expression '\[' failed to compile - missing ]: \["
+* * ERROR ... CDISR5053E: Runtime failures occurred in the following operators: Custom_3.
 */
 composite RegexMatchRESample
 {

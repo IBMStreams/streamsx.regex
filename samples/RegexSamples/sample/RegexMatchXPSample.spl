@@ -1,6 +1,6 @@
 namespace sample;
 
-use com.ibm.streamsx.regex.re2::RegexMatch;
+use com.ibm.streamsx.regex.xpressive::RegexRun;
 
 /**
 * Run two separate streams: performance test and functional test.
@@ -14,7 +14,7 @@ use com.ibm.streamsx.regex.re2::RegexMatch;
 * * Hello World 2,true
 * * Hello World 3,false
 */
-composite RegexMatchSample {
+composite RegexMatchXPSample {
 	graph
 		(stream<rstring str> Beacon_1_out0)as Beacon_1 = Beacon(){
 			param
@@ -33,7 +33,7 @@ composite RegexMatchSample {
 		}
 
 		// Matching string with precompiled regex pattern (from parameter)
-		(stream<rstring str, boolean result> RegexMatch_2_out0) as RegexMatch_2 = RegexMatch(Beacon_1_out0){
+		(stream<rstring str, boolean result> RegexMatch_2_out0) as RegexMatch_2 = RegexRun(Beacon_1_out0){
 			param
 				pattern : "^Hello" ;
 			output
@@ -41,7 +41,7 @@ composite RegexMatchSample {
 		}
 
 		// Matching string with updated precompiled regex pattern (from input attribute)
-		(stream<rstring str, boolean result> RegexMatch_3_out0) as RegexMatch_3 = RegexMatch(Beacon_2_out0){
+		(stream<rstring str, boolean result> RegexMatch_3_out0) as RegexMatch_3 = RegexRun(Beacon_2_out0){
 			output
 				RegexMatch_3_out0 : result = RegexPartialMatch(str, pattern);
 		}

@@ -1,0 +1,69 @@
+namespace sample;
+
+use com.ibm.streamsx.regex.re2::RegexRun;
+
+/**
+* * Functional test - Beacon outputs pattern and string to match.
+* 
+* The result:
+* * RegexReplace: replaces a first 'Hello' word with 'Hi': <Hi world, Hello>
+* * RegexGlobalReplace: replaces all 'Hello' words with 'Hi': <Hi world, Hi>
+* * RegexExtract: 'foo' and 'bar' are extracted and replace placeholders in string: <In domain 'bar', user 'foo' exists!>
+*/
+composite RegexReplaceRESample {
+	graph
+		(stream<rstring str, rstring pattern> Beacon_1_out0)as Beacon_1 = Beacon(){
+			param
+				iterations : 1 ;
+			output
+				Beacon_1_out0 :
+					pattern = "(.*)@([^.]*)",
+					str = "foo@bar.com";
+		}
+
+		// Replacing string once with precompiled regex pattern (from parameter)
+		(stream<rstring str, rstring result> RegexRun_1_out0) as RegexRun_1 = RegexRun(Beacon_1_out0){
+			param
+				pattern : "Hello" ;
+			output
+				RegexRun_1_out0 : result = RegexReplace("<Hello world, Hello>", "Hi");
+		}
+
+		() as PSink = Custom(RegexRun_1_out0)  {
+            logic
+                onTuple RegexRun_1_out0: {
+					printString("RegexReplace: replaces a first 'Hello' word with 'Hi': ") ;
+                    printStringLn(result);
+                }
+        }
+
+		// Replacing string with precompiled regex pattern (from parameter)
+		(stream<rstring str, rstring result> RegexRun_1_out1) as RegexRun_1_1 = RegexRun(Beacon_1_out0){
+			param
+				pattern : "Hello" ;
+			output
+				RegexRun_1_out1 : result = RegexGlobalReplace("<Hello world, Hello>", "Hi");
+		}
+
+		() as PSink1 = Custom(RegexRun_1_out1)  {
+            logic
+                onTuple RegexRun_1_out1: {
+					printString("RegexGlobalReplace: replaces all 'Hello' words with 'Hi': ") ;
+                    printStringLn(result);
+                }
+        }
+
+		// Extracting string with updated precompiled regex pattern (from input attribute)
+		(stream<rstring str, rstring result> RegexRun_2_out0) as RegexRun_2 = RegexRun(Beacon_1_out0){
+			output
+				RegexRun_2_out0 : result = RegexExtract(str, pattern, "<In domain '\\2', user '\\1' exists!>");
+		}
+
+		() as PSink2 = Custom(RegexRun_2_out0)  {
+            logic
+                onTuple RegexRun_2_out0: {
+ 					printString("RegexExtract: 'foo' and 'bar' are extracted and replace placeholders in string: ") ;
+                    printStringLn(result);
+                }
+        }
+}

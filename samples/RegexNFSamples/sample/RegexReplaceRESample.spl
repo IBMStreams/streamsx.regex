@@ -1,0 +1,53 @@
+namespace sample ;
+
+use com.ibm.streamsx.regex::* ;
+use com.ibm.streamsx.regex.re2::*;
+
+/**
+* Run functional tests using native functions.
+* 
+* * Functional tests for compiled local/global replaces.
+* 
+* The output:
+* * regexReplace: replaces first 'Hello' word with 'Hi': <Hi world, Hello>
+* * regexGlobalReplace: replaces all 'Hello' words with 'Hi': <Hi world, Hi>
+* * (replaced 2 times)
+* * regexExtract: 'foo' and 'bar' are extracted and replace placeholders in str2: <In domain 'bar', user 'foo' exists!>
+*/
+composite RegexReplaceRESample
+{
+	graph
+		() as Custom_1 = Custom()
+		{
+			logic
+				state : {
+					// regexCompile can be called within a state
+					boolean _ = regexCompile("Hello", RegexPattern._1); // Compile and index regex pattern _1
+				}
+				onProcess :
+				{
+					// regexCompile can be called inside logic processing - nevertheless the compilation will run only once on the first call
+					regexCompile("(.*)@([^.]*)", RegexPattern._2); // Compile and index regex pattern _2
+
+					// One replace - compiled regex pattern _1 is used
+					mutable rstring str = "<Hello world, Hello>";
+					printString("regexReplace: replaces first 'Hello' word with 'Hi': ") ;
+					if( regexReplace(str, RegexPattern._1, "Hi"))
+						printStringLn(str) ;
+
+					// Global replace - compiled regex pattern _1 is used
+					mutable rstring str1 = "<Hello world, Hello>";
+					printString("regexGlobalReplace: replaces all 'Hello' words with 'Hi': ") ;
+					int32 count = regexGlobalReplace(str1, RegexPattern._1, "Hi");
+					if(count > 0)
+						printStringLn(str1 + "\n(replaced " + (rstring)count + " times)") ;
+
+					// Extract - compiled regex pattern _2 is used
+					mutable rstring str2 = "<In domain '\\2', user '\\1' exists!>";
+					printString("regexExtract: 'foo' and 'bar' are extracted and replace placeholders in str2: ") ;
+					if( regexExtract("foo@bar.com", RegexPattern._2, str2))
+						printStringLn(str2) ;
+				}
+
+		}
+}

@@ -1,0 +1,42 @@
+namespace sample ;
+
+use com.ibm.streamsx.regex::* ;
+use com.ibm.streamsx.regex.xpressive::* ;
+
+/**
+* Run functional tests using native functions.
+* 
+* * Functional tests for compiled global replaces.
+* 
+* The output:
+* * regexGlobalReplace: replaces all 'Hello' words with 'Hi': <Hi world, Hi>
+* * regexGlobalReplace: wraps the date with <date> tag: <I was born on <date>5/30/1973</date> at 7am.>
+*/
+
+composite RegexReplaceXPSample
+{
+	graph
+		() as Custom_1 = Custom()
+		{
+			logic
+				state : {
+					// regexCompile can be called within a state
+					boolean _ = regexCompile("Hello", RegexPattern._1); // Compile and index regex pattern _1
+				}
+				onProcess :
+				{
+					// regexCompile can be called inside logic processing - nevertheless the compilation will run only once on the first call
+					regexCompile("(\\d{1,2})([/-])(\\d{1,2})\\2((?:\\d{2}){1,2})", RegexPattern._2); // Compile and index regex pattern _2
+
+					// Global replace - compiled regex pattern _1 is used
+					printString("regexGlobalReplace: replaces all 'Hello' words with 'Hi': ") ;
+					printStringLn( regexGlobalReplace("<Hello world, Hello>", RegexPattern._1, "Hi"));
+
+					// Global replace - compiled regex pattern _2 is used
+					printString("regexGlobalReplace: wraps the date with <date> tag: ") ;
+					printStringLn( regexGlobalReplace("<I was born on 5/30/1973 at 7am.>", RegexPattern._2, "<date>$&</date>"));
+				}
+
+		}
+}
+

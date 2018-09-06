@@ -14,9 +14,14 @@ use com.ibm.streamsx.regex.xpressive::* ;
 * * regexPartialMatch: 'Hello world' matches '^Hello': true
 * * regexFullMatch: 'Hello world' matches '^Hello': false
 * * regexFullMatch: 'Hello world' matches 'Hello world$': true
+* * regexPartialMatch 2: 'Hello world' matches '': true
+* * WARN ... "Regular expression '' is empty, possibly 'regexCompile' was not called before."
+* * ERROR ... CDISR5033E: An exception occurred during the execution of the Custom_3 operator. Processing element number 0 is terminating.
+* * ERROR ... CDISR5030E: An exception occurred during the execution of the Custom_3 operator. The exception is: unexpected end of pattern found
+* * ERROR ... CDISR5053E: Runtime failures occurred in the following operators: Custom_3.
 */
 
-composite RegexReplaceXPSample
+composite RegexMatchXPSample
 {
 	graph
 		() as Custom_1 = Custom()
@@ -54,5 +59,28 @@ composite RegexReplaceXPSample
 
 		}
 
-}
+		() as Custom_2 = Custom()
+		{
+			logic
+				onProcess :
+				{
+					block(1.0);
+					// Fast partial match - regex pattern _1 is used, but not compiled first
+					printString("regexPartialMatch 2: 'Hello world' matches '': ") ;
+					println(regexPartialMatch("Hello world", RegexPattern._1)) ;
+				}
 
+		}
+
+		() as Custom_3 = Custom()
+		{
+			logic
+				onProcess :
+				{
+					block(2.0);
+					// Compile and index erroneous regex pattern - error is thrown
+					regexCompile("[", RegexPattern._1) ;
+				}
+
+		}
+}

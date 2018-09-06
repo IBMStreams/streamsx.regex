@@ -1,0 +1,52 @@
+namespace sample;
+
+use com.ibm.streamsx.regex.xpressive::RegexRun;
+
+/**
+* * Functional test - Beacon outputs pattern and string to match.
+* 
+* The result:
+* * regexGlobalReplace: wraps the date with <date> tag: <I was born on <date>5/30/1973</date> at 7am.>
+* * regexGlobalReplace: replaces all 'Hello' words with 'Hi': <Hi world, Hi>
+*/
+composite RegexReplaceXPSample {
+	graph
+		(stream<rstring str, rstring pattern> Beacon_1_out0)as Beacon_1 = Beacon(){
+			param
+				iterations : 1 ;
+			output
+				Beacon_1_out0 :
+					pattern = "(\\d{1,2})([/-])(\\d{1,2})\\2((?:\\d{2}){1,2})",
+					str = "<I was born on 5/30/1973 at 7am.>";
+		}
+
+		// Replacing string with precompiled regex pattern (from parameter)
+		(stream<rstring str, rstring result> RegexRun_1_out0) as RegexRun_1 = RegexRun(Beacon_1_out0){
+			param
+				pattern : "Hello" ;
+			output
+				RegexRun_1_out0 : result = RegexGlobalReplace("<Hello world, Hello>", "Hi");
+		}
+
+		() as PSink = Custom(RegexRun_1_out0)  {
+            logic
+                onTuple RegexRun_1_out0: {
+					printString("regexGlobalReplace: replaces all 'Hello' words with 'Hi': ") ;
+                    printStringLn(result);
+                }
+        }
+
+		// Replacing string with updated precompiled regex pattern (from input attribute)
+		(stream<rstring str, rstring result> RegexRun_2_out0) as RegexRun_2 = RegexRun(Beacon_1_out0){
+			output
+				RegexRun_2_out0 : result = RegexGlobalReplace(str, pattern, "<date>$&</date>");
+		}
+
+		() as PSink2 = Custom(RegexRun_2_out0)  {
+            logic
+                onTuple RegexRun_2_out0: {
+ 					printString("regexGlobalReplace: wraps the date with <date> tag: ") ;
+                    printStringLn(result);
+                }
+        }
+}
