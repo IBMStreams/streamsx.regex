@@ -1,0 +1,102 @@
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+<%
+	my $inputPort = $model->getInputPortAt(0);
+	my $outputPort = $model->getOutputPortAt(0);
+	my $inTuple = $inputPort->getCppTupleName();
+
+	my $pattern = ($_ = $model->getParameterByName('pattern')) ? $_->getValueAt(0)->getCppExpression() : '""';
+	my $logErrors = ($_ = $model->getParameterByName('logErrors')) ? $_->getValueAt(0)->getCppExpression() : "true";
+	my $maxMemory = ($_ = $model->getParameterByName('maxMemory')) ? $_->getValueAt(0)->getCppExpression() : 1000000;
+%>
+
+void MY_OPERATOR::updateRegexMap(const rstring & pattern) {
+	AutoPortMutex am(_mutex, *this);
+	if(_regexMap.count(pattern) == 0) {
+		_regexMap.insert(pattern, std::auto_ptr<RE2>(new RE2(getStringPiece(pattern), _options)));
+	}
+}
+
+template<typename T>
+bool MY_OPERATOR::RegexFullMatch(const T & data) {
+	return RE2::FullMatch(getStringPiece(data), _regex);
+}
+
+template<typename T>
+bool MY_OPERATOR::RegexFullMatch(const T & data, const rstring & pattern) {
+	updateRegexMap(pattern);
+	return RE2::FullMatch(getStringPiece(data), _regexMap.at(pattern));
+}
+
+template<typename T>
+bool MY_OPERATOR::RegexPartialMatch(const T & data) {
+	return RE2::PartialMatch(getStringPiece(data), _regex);
+}
+
+template<typename T>
+bool MY_OPERATOR::RegexPartialMatch(const T & data, const rstring & pattern) {
+	updateRegexMap(pattern);
+	return RE2::PartialMatch(getStringPiece(data), _regexMap.at(pattern));
+}
+
+template<typename T>
+rstring MY_OPERATOR::RegexReplace(const T & data, const SPL::rstring & rewrite) {
+	re2::StringPiece sp(getStringPiece(data));
+	rstring result(sp.data(), sp.size());
+	RE2::Replace(&result, _regex, getStringPiece(rewrite));
+	return result;
+}
+
+template<typename T>
+rstring MY_OPERATOR::RegexReplace(const T & data, const rstring & pattern, const SPL::rstring & rewrite) {
+	updateRegexMap(pattern);
+	re2::StringPiece sp(getStringPiece(data));
+	rstring result(sp.data(), sp.size());
+	RE2::Replace(&result, _regexMap.at(pattern), getStringPiece(rewrite));
+	return result;
+}
+
+template<typename T>
+rstring MY_OPERATOR::RegexGlobalReplace(const T & data, const SPL::rstring & rewrite) {
+	re2::StringPiece sp(getStringPiece(data));
+	rstring result(sp.data(), sp.size());
+	RE2::GlobalReplace(&result, _regex, getStringPiece(rewrite));
+	return result;
+}
+
+template<typename T>
+rstring MY_OPERATOR::RegexGlobalReplace(const T & data, const rstring & pattern, const SPL::rstring & rewrite) {
+	updateRegexMap(pattern);
+	re2::StringPiece sp(getStringPiece(data));
+	rstring result(sp.data(), sp.size());
+	RE2::GlobalReplace(&result, _regexMap.at(pattern), getStringPiece(rewrite));
+	return result;
+}
+
+template<typename T>
+rstring MY_OPERATOR::RegexExtract(const T & data, const SPL::rstring & rewrite) {
+	rstring result;
+	if( RE2::Extract(getStringPiece(data), _regex, getStringPiece(rewrite), &result))
+		return result;
+	else
+		return rewrite;
+}
+
+template<typename T>
+rstring MY_OPERATOR::RegexExtract(const T & data, const rstring & pattern, const SPL::rstring & rewrite) {
+	updateRegexMap(pattern);
+	rstring result;
+	if( RE2::Extract(getStringPiece(data), _regexMap.at(pattern), getStringPiece(rewrite), &result))
+		return result;
+	else
+		return rewrite;
+}
+
+MY_OPERATOR::MY_OPERATOR() : _options(), _regex(getStringPiece(<%=$pattern%>), _options) {
+	_options.set_log_errors(<%=$logErrors%>);
+	_options.set_max_mem(<%=$maxMemory%>);
+}
+
+@include "../../com.ibm.streamsx.regex/Common/RegexOperator_cpp.cgt"
+
+<%SPL::CodeGen::implementationEpilogue($model);%>

@@ -3,10 +3,12 @@
   <cppOperatorModel>
     <context>
       <description>
-RegexMatch operator has three custom output functions: 
-* RegexSimpleMatch performs a partial match - runs in interpretation mode (like SPL regexMatch function).
+RegexRun operator has five custom output functions: 
 * RegexPartialMatch performs a partial match - runs in compilation mode.
 * RegexFullMatch performs a full match - runs in compilation mode.
+* RegexReplace performs a single search/replace - runs in compilation mode.
+* RegexGlobalReplace performs a global search/replace - runs in compilation mode.
+* RegexExtract performs search/extract - runs in compilation mode.
 </description>
       <customOutputFunctions>
         <customOutputFunction>
@@ -48,12 +50,52 @@ RegexMatch operator has three custom output functions:
             <prototype>boolean RegexPartialMatch(blob blb, rstring pattern)</prototype>
           </function>
           <function pseudoFunction="false">
-            <description>Tries to match the string with the pattern.</description>
-            <prototype>boolean RegexSimpleMatch(rstring str, rstring pattern)</prototype>
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces a first finding with rewrite.</description>
+            <prototype>rstring RegexReplace(rstring str, rstring rewrite)</prototype>
           </function>
           <function pseudoFunction="false">
-            <description>Tries to match the blob with the pattern.</description>
-            <prototype>boolean RegexSimpleMatch(blob blb, rstring pattern)</prototype>
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces a first finding with rewrite.</description>
+            <prototype>rstring RegexReplace(blob blb, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Searches the string with the pattern and replaces a first finding with rewrite.</description>
+            <prototype>rstring RegexReplace(rstring str, rstring pattern, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Searches the string with the pattern and replaces a first finding with rewrite.</description>
+            <prototype>rstring RegexReplace(blob blb, rstring pattern, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(rstring str, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(blob blb, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Searches the string with the pattern and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(rstring str, rstring pattern, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Searches the string with the pattern and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(blob blb, rstring pattern, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>rstring RegexExtract(rstring str, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>rstring RegexExtract(blob blb, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>rstring RegexExtract(rstring str, rstring pattern, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>rstring RegexExtract(blob blb, rstring pattern, rstring rewrite)</prototype>
           </function>
         </customOutputFunction>
       </customOutputFunctions>
@@ -103,7 +145,7 @@ RegexMatch operator has three custom output functions:
     </parameters>
     <inputPorts>
       <inputPortSet>
-        <description>The RegexMatch operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
+        <description>The RegexRun operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
         <windowingDescription></windowingDescription>
         <tupleMutationAllowed>false</tupleMutationAllowed>
         <windowingMode>NonWindowed</windowingMode>
@@ -114,7 +156,7 @@ RegexMatch operator has three custom output functions:
     </inputPorts>
     <outputPorts>
       <outputPortSet>
-        <description>The RegexMatch operator is configurable with one output port. The output port is mutating and its punctuation mode is Preserving.</description>
+        <description>The RegexRun operator is configurable with one output port. The output port is mutating and its punctuation mode is Preserving.</description>
         <expressionMode>Expression</expressionMode>
         <autoAssignment>true</autoAssignment>
         <completeAssignment>true</completeAssignment>

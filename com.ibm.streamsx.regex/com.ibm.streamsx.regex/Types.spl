@@ -1,4 +1,4 @@
-namespace com.ibm.streamsx.regex.re2;
+namespace com.ibm.streamsx.regex;
 
 public composite RegexPattern {
 	type

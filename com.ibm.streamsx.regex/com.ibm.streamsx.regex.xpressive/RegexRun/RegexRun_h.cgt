@@ -1,0 +1,29 @@
+@include "../../com.ibm.streamsx.regex/Common/RegexInclude_h.cgt"
+
+#include <streams_boost/xpressive/xpressive_dynamic.hpp>
+
+using streams_boost::xpressive::cregex;
+using streams_boost::xpressive::regex_match;
+using streams_boost::xpressive::regex_search;
+
+<%SPL::CodeGen::headerPrologue($model);%>
+
+using SPL::rstring;
+
+class MY_OPERATOR : public MY_BASE_OPERATOR {
+private:
+  typedef ptr_unordered_map<rstring, cregex> RegexMap;
+
+  cregex _regex;
+
+  bool RegexFullMatch(const rstring & data);
+  bool RegexFullMatch(const rstring & data, const rstring & pattern);
+  bool RegexPartialMatch(const rstring & data);
+  bool RegexPartialMatch(const rstring & data, const rstring & pattern);
+  rstring RegexGlobalReplace(const rstring & data, const rstring & rewrite);
+  rstring RegexGlobalReplace(const rstring & data, const rstring & pattern, const rstring & rewrite);
+  
+  @include "../../com.ibm.streamsx.regex/Common/RegexOperator_h.cgt"
+}; 
+
+<%SPL::CodeGen::headerEpilogue($model);%>

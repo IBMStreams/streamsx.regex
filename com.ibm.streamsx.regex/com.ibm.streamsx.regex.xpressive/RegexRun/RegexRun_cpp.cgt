@@ -1,0 +1,57 @@
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+<%
+	my $inputPort = $model->getInputPortAt(0);
+	my $outputPort = $model->getOutputPortAt(0);
+	my $inTuple = $inputPort->getCppTupleName();
+
+	my $pattern = ($_ = $model->getParameterByName('pattern')) ? $_->getValueAt(0)->getCppExpression() : '""';
+%>
+
+bool MY_OPERATOR::RegexFullMatch(const rstring & data) {
+	return regex_match(data.c_str(), _regex);
+}
+
+bool MY_OPERATOR::RegexFullMatch(const rstring & data, const rstring & pattern) {
+	AutoPortMutex am(_mutex, *this);
+	if(_regexMap.count(pattern) == 0) {
+		_regexMap.insert(pattern, std::auto_ptr<cregex>(new cregex(cregex::compile(pattern.begin(), pattern.end()))));
+	}
+
+	return regex_match(data.c_str(), _regexMap.at(pattern));
+}
+
+bool MY_OPERATOR::RegexPartialMatch(const rstring & data) {
+	return regex_search(data.c_str(), _regex);
+}
+
+bool MY_OPERATOR::RegexPartialMatch(const rstring & data, const rstring & pattern) {
+	AutoPortMutex am(_mutex, *this);
+	if(_regexMap.count(pattern) == 0) {
+		_regexMap.insert(pattern, std::auto_ptr<cregex>(new cregex(cregex::compile(pattern.begin(), pattern.end()))));
+	}
+
+	return regex_search(data.c_str(), _regexMap.at(pattern));
+}
+
+rstring MY_OPERATOR::RegexGlobalReplace(const rstring & data, const rstring & rewrite) {
+	return regex_replace(data.c_str(), _regex, rewrite.c_str());
+}
+
+rstring MY_OPERATOR::RegexGlobalReplace(const rstring & data, const rstring & pattern, const rstring & rewrite) {
+	AutoPortMutex am(_mutex, *this);
+	if(_regexMap.count(pattern) == 0) {
+		_regexMap.insert(pattern, std::auto_ptr<cregex>(new cregex(cregex::compile(pattern.begin(), pattern.end()))));
+	}
+
+	return regex_replace(data.c_str(), _regexMap.at(pattern), rewrite.c_str());
+}
+
+MY_OPERATOR::MY_OPERATOR() {
+	const rstring pattern(<%=$pattern%>);
+	_regex = cregex::compile(pattern.begin(), pattern.end());
+}
+
+@include "../../com.ibm.streamsx.regex/Common/RegexOperator_cpp.cgt"
+
+<%SPL::CodeGen::implementationEpilogue($model);%>

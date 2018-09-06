@@ -1,116 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.1.0.0" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.2.1.3" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <toolkit name="com.ibm.streamsx.regex" requiredProductVersion="4.0.0" version="1.4.3.1">
+  <toolkit name="com.ibm.streamsx.regex" requiredProductVersion="4.0.0" version="2.0.0">
     <description>
+Support for [https://theboostcpplibraries.com/boost.xpressive|Boost Xpressive] regular expression library.
 Support for [http://code.google.com/p/re2|RE2] regular expression library.
-
 RE2 is a fast, safe, thread-friendly alternative to backtracking regular expression engines like those used in PCRE, Perl, and Python.
 RE2 uses [http://swtch.com/~rsc/regexp/regexp1.html|automata theory] to guarantee that regular expressions run in time linear in the size of the input.
 
-This toolkit provides several operators and native finctions to run RE2 engine in compilation or interpretation mode.
+This toolkit provides several operators and native finctions to run regular expressions in compilation or interpretation mode.
 * Compilation mode: The regex is compiled  and executed on the first call, then directly executed on the subsequent calls.
 * Interpretation mode: The regex is interpreted on each call.
 
-Each operator/native function implements partial or full regex match.
+Each operator/native function implements partial or full regex match/replace.
 
 **Third-party libraries**
 * This toolkit embeds RE2 headers/libraries under impl/&lt;include|lib&gt;.
     </description>
     <uriTable>
-      <uri index="3" value="com.ibm.streamsx.regex.re2/RegexMatch"/>
+      <uri index="1" value="com.ibm.streamsx.regex/Types.spl"/>
+      <uri index="3" value="com.ibm.streamsx.regex.re2/RegexRun"/>
+      <uri index="4" value="com.ibm.streamsx.regex.xpressive/native.function/function.xml"/>
+      <uri index="5" value="com.ibm.streamsx.regex.xpressive/RegexRun"/>
       <uri index="2" value="com.ibm.streamsx.regex.re2/native.function/function.xml"/>
-      <uri index="1" value="com.ibm.streamsx.regex.re2/Types.spl"/>
     </uriTable>
-    <namespace name="com.ibm.streamsx.regex.re2">
-      <primitiveOp language="Cpp" modelUriIndex="3" name="RegexMatch" public="true">
-        <description>
-RegexMatch operator has three custom output functions: 
-* RegexSimpleMatch performs a partial match - runs in interpretation mode (like SPL regexMatch function).
-* RegexPartialMatch performs a partial match - runs in compilation mode.
-* RegexFullMatch performs a full match - runs in compilation mode.
-</description>
-        <outputFunctions name="RegexFS">
-          <function name="AsIs" returnType="T">
-            <description>Assign value to the output attribute.</description>
-            <prototype>&lt;any T&gt; T AsIs(T v)</prototype>
-            <parameter name="v" type="T"/>
-          </function>
-          <function name="RegexFullMatch" returnType="boolean">
-            <description>Tries to match the whole string with the pattern (defined as the operator parameter).</description>
-            <prototype>boolean RegexFullMatch(rstring str)</prototype>
-            <parameter name="str" type="rstring"/>
-          </function>
-          <function name="RegexFullMatch" returnType="boolean">
-            <description>Tries to match the whole blob with the pattern (defined as the operator parameter).</description>
-            <prototype>boolean RegexFullMatch(blob blb)</prototype>
-            <parameter name="blb" type="blob"/>
-          </function>
-          <function name="RegexFullMatch" returnType="boolean">
-            <description>Tries to match the whole string with the pattern.</description>
-            <prototype>boolean RegexFullMatch(rstring str, rstring pattern)</prototype>
-            <parameter name="str" type="rstring"/>
-            <parameter name="pattern" type="rstring"/>
-          </function>
-          <function name="RegexFullMatch" returnType="boolean">
-            <description>Tries to match the whole blob with the pattern.</description>
-            <prototype>boolean RegexFullMatch(blob blb, rstring pattern)</prototype>
-            <parameter name="blb" type="blob"/>
-            <parameter name="pattern" type="rstring"/>
-          </function>
-          <function name="RegexPartialMatch" returnType="boolean">
-            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
-            <prototype>boolean RegexPartialMatch(rstring str)</prototype>
-            <parameter name="str" type="rstring"/>
-          </function>
-          <function name="RegexPartialMatch" returnType="boolean">
-            <description>Tries to match the blob with the pattern (defined as the operator parameter).</description>
-            <prototype>boolean RegexPartialMatch(blob blb)</prototype>
-            <parameter name="blb" type="blob"/>
-          </function>
-          <function name="RegexPartialMatch" returnType="boolean">
-            <description>Tries to match the string with the pattern.</description>
-            <prototype>boolean RegexPartialMatch(rstring str, rstring pattern)</prototype>
-            <parameter name="str" type="rstring"/>
-            <parameter name="pattern" type="rstring"/>
-          </function>
-          <function name="RegexPartialMatch" returnType="boolean">
-            <description>Tries to match the blob with the pattern.</description>
-            <prototype>boolean RegexPartialMatch(blob blb, rstring pattern)</prototype>
-            <parameter name="blb" type="blob"/>
-            <parameter name="pattern" type="rstring"/>
-          </function>
-          <function name="RegexSimpleMatch" returnType="boolean">
-            <description>Tries to match the string with the pattern.</description>
-            <prototype>boolean RegexSimpleMatch(rstring str, rstring pattern)</prototype>
-            <parameter name="str" type="rstring"/>
-            <parameter name="pattern" type="rstring"/>
-          </function>
-          <function name="RegexSimpleMatch" returnType="boolean">
-            <description>Tries to match the blob with the pattern.</description>
-            <prototype>boolean RegexSimpleMatch(blob blb, rstring pattern)</prototype>
-            <parameter name="blb" type="blob"/>
-            <parameter name="pattern" type="rstring"/>
-          </function>
-        </outputFunctions>
-        <parametersDescription/>
-        <parameter cardinality="1" expressionMode="AttributeFree" name="pattern" optional="true" type="rstring">
-          <description>The optional 'rstring' parameter specifies the pattern to match.</description>
-        </parameter>
-        <parameter cardinality="1" expressionMode="AttributeFree" name="maxMemory" optional="true" type="int64">
-          <description>The optional 'int64' parameter specifies maxMemory to allocate in bytes.</description>
-        </parameter>
-        <parameter cardinality="1" expressionMode="AttributeFree" name="logErrors" optional="true" type="boolean">
-          <description>The optional 'boolean' parameter specifies if error logging is enabled.</description>
-        </parameter>
-        <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
-          <description>The RegexMatch operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
-          <windowPolicy>NonWindowed</windowPolicy>
-        </inputPort>
-        <outputPort expressionMode="Expression" maxNumPorts="1" minNumPorts="1" optional="false" windowPunctOutputMode="Preserving">
-          <description>The RegexMatch operator is configurable with one output port. The output port is mutating and its punctuation mode is Preserving.</description>
-        </outputPort>
-      </primitiveOp>
+    <namespace name="com.ibm.streamsx.regex">
       <compositeOp column="18" line="3" name="RegexPattern" potentialMain="true" public="true" uriIndex="1">
         <type column="10" line="5" name="type_1" static="true" type="enum { _1 }" uriIndex="1"/>
         <type column="10" line="6" name="type_2" static="true" type="enum { _2 }" uriIndex="1"/>
@@ -193,67 +107,401 @@ RegexMatch operator has three custom output functions:
           <enum>_20</enum>
         </enumLiterals>
       </compositeOp>
+    </namespace>
+    <namespace name="com.ibm.streamsx.regex.re2">
+      <primitiveOp language="Cpp" modelUriIndex="3" name="RegexRun" public="true">
+        <description>
+RegexRun operator has five custom output functions: 
+* RegexPartialMatch performs a partial match - runs in compilation mode.
+* RegexFullMatch performs a full match - runs in compilation mode.
+* RegexReplace performs a single search/replace - runs in compilation mode.
+* RegexGlobalReplace performs a global search/replace - runs in compilation mode.
+* RegexExtract performs search/extract - runs in compilation mode.
+</description>
+        <outputFunctions name="RegexFS">
+          <function name="AsIs" returnType="T">
+            <description>Assign value to the output attribute.</description>
+            <prototype>&lt;any T&gt; T AsIs(T v)</prototype>
+            <parameter name="v" type="T"/>
+          </function>
+          <function name="RegexFullMatch" returnType="boolean">
+            <description>Tries to match the whole string with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexFullMatch(rstring str)</prototype>
+            <parameter name="str" type="rstring"/>
+          </function>
+          <function name="RegexFullMatch" returnType="boolean">
+            <description>Tries to match the whole blob with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexFullMatch(blob blb)</prototype>
+            <parameter name="blb" type="blob"/>
+          </function>
+          <function name="RegexFullMatch" returnType="boolean">
+            <description>Tries to match the whole string with the pattern.</description>
+            <prototype>boolean RegexFullMatch(rstring str, rstring pattern)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+          <function name="RegexFullMatch" returnType="boolean">
+            <description>Tries to match the whole blob with the pattern.</description>
+            <prototype>boolean RegexFullMatch(blob blb, rstring pattern)</prototype>
+            <parameter name="blb" type="blob"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+          <function name="RegexPartialMatch" returnType="boolean">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexPartialMatch(rstring str)</prototype>
+            <parameter name="str" type="rstring"/>
+          </function>
+          <function name="RegexPartialMatch" returnType="boolean">
+            <description>Tries to match the blob with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexPartialMatch(blob blb)</prototype>
+            <parameter name="blb" type="blob"/>
+          </function>
+          <function name="RegexPartialMatch" returnType="boolean">
+            <description>Tries to match the string with the pattern.</description>
+            <prototype>boolean RegexPartialMatch(rstring str, rstring pattern)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+          <function name="RegexPartialMatch" returnType="boolean">
+            <description>Tries to match the blob with the pattern.</description>
+            <prototype>boolean RegexPartialMatch(blob blb, rstring pattern)</prototype>
+            <parameter name="blb" type="blob"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+          <function name="RegexReplace" returnType="rstring">
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces a first finding with rewrite.</description>
+            <prototype>rstring RegexReplace(rstring str, rstring rewrite)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexReplace" returnType="rstring">
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces a first finding with rewrite.</description>
+            <prototype>rstring RegexReplace(blob blb, rstring rewrite)</prototype>
+            <parameter name="blb" type="blob"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexReplace" returnType="rstring">
+            <description>Searches the string with the pattern and replaces a first finding with rewrite.</description>
+            <prototype>rstring RegexReplace(rstring str, rstring pattern, rstring rewrite)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexReplace" returnType="rstring">
+            <description>Searches the string with the pattern and replaces a first finding with rewrite.</description>
+            <prototype>rstring RegexReplace(blob blb, rstring pattern, rstring rewrite)</prototype>
+            <parameter name="blb" type="blob"/>
+            <parameter name="pattern" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexGlobalReplace" returnType="rstring">
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(rstring str, rstring rewrite)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexGlobalReplace" returnType="rstring">
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(blob blb, rstring rewrite)</prototype>
+            <parameter name="blb" type="blob"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexGlobalReplace" returnType="rstring">
+            <description>Searches the string with the pattern and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(rstring str, rstring pattern, rstring rewrite)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexGlobalReplace" returnType="rstring">
+            <description>Searches the string with the pattern and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(blob blb, rstring pattern, rstring rewrite)</prototype>
+            <parameter name="blb" type="blob"/>
+            <parameter name="pattern" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexExtract" returnType="rstring">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>rstring RegexExtract(rstring str, rstring rewrite)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexExtract" returnType="rstring">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>rstring RegexExtract(blob blb, rstring rewrite)</prototype>
+            <parameter name="blb" type="blob"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexExtract" returnType="rstring">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>rstring RegexExtract(rstring str, rstring pattern, rstring rewrite)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexExtract" returnType="rstring">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>rstring RegexExtract(blob blb, rstring pattern, rstring rewrite)</prototype>
+            <parameter name="blb" type="blob"/>
+            <parameter name="pattern" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+        </outputFunctions>
+        <parametersDescription/>
+        <parameter cardinality="1" expressionMode="AttributeFree" name="pattern" optional="true" type="rstring">
+          <description>The optional 'rstring' parameter specifies the pattern to match.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="AttributeFree" name="maxMemory" optional="true" type="int64">
+          <description>The optional 'int64' parameter specifies maxMemory to allocate in bytes.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="AttributeFree" name="logErrors" optional="true" type="boolean">
+          <description>The optional 'boolean' parameter specifies if error logging is enabled.</description>
+        </parameter>
+        <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
+          <description>The RegexRun operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
+          <windowPolicy>NonWindowed</windowPolicy>
+        </inputPort>
+        <outputPort expressionMode="Expression" maxNumPorts="1" minNumPorts="1" optional="false" windowPunctOutputMode="Preserving">
+          <description>The RegexRun operator is configurable with one output port. The output port is mutating and its punctuation mode is Preserving.</description>
+        </outputPort>
+      </primitiveOp>
       <function modelUriIndex="2" name="regexCompile" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Compiles and indexes regex pattern</description>
+        <description>
+Compiles and indexes regular expression pattern.
+@param pattern regular expression pattern of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@return boolean regular expression compilation success.
+       </description>
         <prototype>&lt;enum E&gt; public boolean regexCompile(rstring pattern, E patternIndex)</prototype>
         <parameter name="pattern" type="rstring"/>
         <parameter name="patternIndex" type="E"/>
       </function>
       <function modelUriIndex="2" name="regexCompile" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Compiles and indexes regex pattern, additionally allows to control max memory allocated</description>
+        <description>
+Compiles and indexes regular expression pattern, allows to control max memory allocated.
+@param pattern regular expression pattern of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@param maxmem maximum allocated memory allowed of type int64.
+@return boolean regular expression compilation success.
+       </description>
         <prototype>&lt;enum E&gt; public boolean regexCompile(rstring pattern, E patternIndex, int64 maxmem)</prototype>
         <parameter name="pattern" type="rstring"/>
         <parameter name="patternIndex" type="E"/>
         <parameter name="maxmem" type="int64"/>
       </function>
-      <function modelUriIndex="2" name="regexCompileStatic" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Compiles and indexes regex pattern. This is a static version - a pattern is visible on PE level</description>
-        <prototype>&lt;enum E&gt; public boolean regexCompileStatic(rstring pattern, E patternIndex)</prototype>
-        <parameter name="pattern" type="rstring"/>
-        <parameter name="patternIndex" type="E"/>
-      </function>
-      <function modelUriIndex="2" name="regexCompileStatic" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Compiles and indexes regex pattern, additionally allows to control max memory allocated. This is a static version - a pattern is visible on PE level</description>
-        <prototype>&lt;enum E&gt; public boolean regexCompileStatic(rstring pattern, E patternIndex, int64 maxmem)</prototype>
-        <parameter name="pattern" type="rstring"/>
-        <parameter name="patternIndex" type="E"/>
-        <parameter name="maxmem" type="int64"/>
-      </function>
       <function modelUriIndex="2" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Performs a full match of the whole string with the pattern - runs in interpretation mode (like SPL regexMatch function)</description>
+        <description>
+Performs a full match of the whole string with the pattern - runs in interpretation mode (like SPL regexMatch function).
+@param str string to match of type rstring. 
+@param pattern regular expression of type rstring.
+@return boolean matching success.
+       </description>
         <prototype>public boolean regexFullMatch(rstring str, rstring pattern)</prototype>
         <parameter name="str" type="rstring"/>
         <parameter name="pattern" type="rstring"/>
       </function>
       <function modelUriIndex="2" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Performs a full match of the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern)</description>
+        <description>
+Performs a full match of the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
+@param str string to match of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@return boolean matching success.
+       </description>
         <prototype>&lt;enum E&gt; public boolean regexFullMatch(rstring str, E patternIndex)</prototype>
         <parameter name="str" type="rstring"/>
         <parameter name="patternIndex" type="E"/>
       </function>
-      <function modelUriIndex="2" name="regexFullMatchStatic" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Performs a full match of the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern). This is a static version - a pattern is visible on PE level</description>
-        <prototype>&lt;enum E&gt; public boolean regexFullMatchStatic(rstring str, E patternIndex)</prototype>
-        <parameter name="str" type="rstring"/>
-        <parameter name="patternIndex" type="E"/>
-      </function>
       <function modelUriIndex="2" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Performs a partial match of the string with the pattern - runs in interpretation mode (like SPL regexMatch function).</description>
+        <description>
+Performs a partial match of the string with the pattern - runs in interpretation mode (like SPL regexMatch function).
+@param str string to match of type rstring. 
+@param pattern regular expression of type rstring.
+@return boolean matching success.
+       </description>
         <prototype>public boolean regexPartialMatch(rstring str, rstring pattern)</prototype>
         <parameter name="str" type="rstring"/>
         <parameter name="pattern" type="rstring"/>
       </function>
       <function modelUriIndex="2" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Performs a partial match of the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern)</description>
+        <description>
+Performs a partial match of the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
+@param str string to match of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@return boolean matching success.
+       </description>
         <prototype>&lt;enum E&gt; public boolean regexPartialMatch(rstring str, E patternIndex)</prototype>
         <parameter name="str" type="rstring"/>
         <parameter name="patternIndex" type="E"/>
       </function>
-      <function modelUriIndex="2" name="regexPartialMatchStatic" native="true" public="true" returnType="boolean" uriIndex="0">
-        <description>Performs a partial match of the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern). This is a static version - a pattern is visible on PE level</description>
-        <prototype>&lt;enum E&gt; public boolean regexPartialMatchStatic(rstring str, E patternIndex)</prototype>
+      <function modelUriIndex="2" name="regexReplace" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>
+Performs one replacement of the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
+@param str string to match of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@param rewrite replace string of type rstring.
+@return boolean matching success.
+       </description>
+        <prototype>&lt;enum E&gt; public boolean regexReplace(mutable rstring str, E patternIndex, rstring rewrite)</prototype>
+        <parameter mutable="true" name="str" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+        <parameter name="rewrite" type="rstring"/>
+      </function>
+      <function modelUriIndex="2" name="regexGlobalReplace" native="true" public="true" returnType="int32" uriIndex="0">
+        <description>
+Performs all replacements of the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
+@param str string to match of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@param rewrite replace string of type rstring.
+@return int32 number of matching successes.
+       </description>
+        <prototype>&lt;enum E&gt; public int32 regexGlobalReplace(mutable rstring str, E patternIndex, rstring rewrite)</prototype>
+        <parameter mutable="true" name="str" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+        <parameter name="rewrite" type="rstring"/>
+      </function>
+      <function modelUriIndex="2" name="regexExtract" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>
+Performs extraction of parameters from the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
+@param str string to match of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@param rewrite string to construct with the extracted parameters of type rstring.
+@return boolean matching success.
+       </description>
+        <prototype>&lt;enum E&gt; public boolean regexExtract(rstring str, E patternIndex, mutable rstring rewrite)</prototype>
         <parameter name="str" type="rstring"/>
         <parameter name="patternIndex" type="E"/>
+        <parameter mutable="true" name="rewrite" type="rstring"/>
+      </function>
+    </namespace>
+    <namespace name="com.ibm.streamsx.regex.xpressive">
+      <primitiveOp language="Cpp" modelUriIndex="5" name="RegexRun" public="true">
+        <description>
+RegexRun operator has three custom output functions: 
+* RegexPartialMatch performs a partial match - runs in compilation mode.
+* RegexFullMatch performs a full match - runs in compilation mode.
+* RegexGlobalReplace performs a global search/replace - runs in compilation mode.
+</description>
+        <outputFunctions name="RegexFS">
+          <function name="AsIs" returnType="T">
+            <description>Assign value to the output attribute.</description>
+            <prototype>&lt;any T&gt; T AsIs(T v)</prototype>
+            <parameter name="v" type="T"/>
+          </function>
+          <function name="RegexFullMatch" returnType="boolean">
+            <description>Tries to match the whole string with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexFullMatch(rstring str)</prototype>
+            <parameter name="str" type="rstring"/>
+          </function>
+          <function name="RegexFullMatch" returnType="boolean">
+            <description>Tries to match the whole string with the pattern.</description>
+            <prototype>boolean RegexFullMatch(rstring str, rstring pattern)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+          <function name="RegexPartialMatch" returnType="boolean">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexPartialMatch(rstring str)</prototype>
+            <parameter name="str" type="rstring"/>
+          </function>
+          <function name="RegexPartialMatch" returnType="boolean">
+            <description>Tries to match the string with the pattern.</description>
+            <prototype>boolean RegexPartialMatch(rstring str, rstring pattern)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+          </function>
+          <function name="RegexGlobalReplace" returnType="rstring">
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(rstring str, rstring rewrite)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+          <function name="RegexGlobalReplace" returnType="rstring">
+            <description>Searches the string with the pattern and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(rstring str, rstring pattern, rstring rewrite)</prototype>
+            <parameter name="str" type="rstring"/>
+            <parameter name="pattern" type="rstring"/>
+            <parameter name="rewrite" type="rstring"/>
+          </function>
+        </outputFunctions>
+        <parametersDescription/>
+        <parameter cardinality="1" expressionMode="AttributeFree" name="pattern" optional="true" type="rstring">
+          <description>The optional 'rstring' parameter specifies the pattern to match.</description>
+        </parameter>
+        <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
+          <description>The RegexRun operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
+          <windowPolicy>NonWindowed</windowPolicy>
+        </inputPort>
+        <outputPort expressionMode="Expression" maxNumPorts="1" minNumPorts="1" optional="false" windowPunctOutputMode="Preserving">
+          <description>The RegexRun operator is configurable with one output port. The output port is mutating and its punctuation mode is Preserving.</description>
+        </outputPort>
+      </primitiveOp>
+      <function modelUriIndex="4" name="regexCompile" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>
+Compiles and indexes regular expression pattern.
+@param pattern regular expression pattern of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@return boolean regular expression compilation success.
+       </description>
+        <prototype>&lt;enum E&gt; public boolean regexCompile(rstring pattern, E patternIndex)</prototype>
+        <parameter name="pattern" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+      </function>
+      <function modelUriIndex="4" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>
+Performs a full match of the whole string with the pattern - runs in interpretation mode (like SPL regexMatch function).
+@param str string to match of type rstring. 
+@param pattern regular expression of type rstring.
+@return boolean matching success.
+       </description>
+        <prototype>public boolean regexFullMatch(rstring str, rstring pattern)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="pattern" type="rstring"/>
+      </function>
+      <function modelUriIndex="4" name="regexFullMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>
+Performs a full match of the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
+@param str string to match of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@return boolean matching success.
+       </description>
+        <prototype>&lt;enum E&gt; public boolean regexFullMatch(rstring str, E patternIndex)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+      </function>
+      <function modelUriIndex="4" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>
+Performs a partial match of the string with the pattern - runs in interpretation mode (like SPL regexMatch function).
+@param str string to match of type rstring. 
+@param pattern regular expression of type rstring.
+@return boolean matching success.
+       </description>
+        <prototype>public boolean regexPartialMatch(rstring str, rstring pattern)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="pattern" type="rstring"/>
+      </function>
+      <function modelUriIndex="4" name="regexPartialMatch" native="true" public="true" returnType="boolean" uriIndex="0">
+        <description>
+Performs a partial match of the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
+@param str string to match of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@return boolean matching success.
+       </description>
+        <prototype>&lt;enum E&gt; public boolean regexPartialMatch(rstring str, E patternIndex)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+      </function>
+      <function modelUriIndex="4" name="regexGlobalReplace" native="true" public="true" returnType="rstring" uriIndex="0">
+        <description>
+Performs all replacements of the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
+@param str string to match of type rstring. 
+@param patternIndex regular expression index of enum type (e.g. enum\{_1\}).
+@param rewrite replace string of type rstring.
+@return rstring number of matching successes.
+       </description>
+        <prototype>&lt;enum E&gt; public rstring regexGlobalReplace(rstring str, E patternIndex, rstring rewrite)</prototype>
+        <parameter name="str" type="rstring"/>
+        <parameter name="patternIndex" type="E"/>
+        <parameter name="rewrite" type="rstring"/>
       </function>
     </namespace>
     <sabFiles>

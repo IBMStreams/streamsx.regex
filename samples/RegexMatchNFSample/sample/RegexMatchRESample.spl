@@ -1,0 +1,75 @@
+namespace sample;
+
+use com.ibm.streamsx.regex.re2::*;
+
+/**
+* Run functional tests using native functions.
+* 
+* * Functional tests for interpreted and compiled partial/full matches.
+* 
+* The output:
+* * regexPartialMatch: 'Hello world' matches '^Hello': true
+* * regexFullMatch: 'Hello world' matches '^Hello': true
+* * regexPartialMatch: 'Hello world' matches '^Hello': true
+* * regexFullMatch: 'Hello world' matches '^Hello': false
+* * regexFullMatch: 'Hello world' matches 'Hello world$': true
+*/
+composite RegexMatchNFSample {
+	graph
+		()as Custom_1 = Custom(){
+			logic
+				onProcess : {
+					// Compile and index regex pattern _1 for Custom_1, additionally increase max memory allocated
+					regexCompile("^Hello", RegexPattern._1);
+					regexCompile("Hello world$", RegexPattern._2);
+					regexCompile(".*VERY_BIG_PATTERN.*", RegexPattern._3, 10000000l);
+
+					// Simple partial match (similar to SPL regex functions) - regex pattern is interpreted on each call
+					printString("regexPartialMatch: 'Hello world' matches '^Hello': ");
+					println(regexPartialMatch("Hello world", "^Hello"));
+					
+					// Simple full match (the whole string is matched) - regex pattern is interpreted on each call
+					printString("regexFullMatch: 'Hello world' matches '^Hello world': ");
+					println(regexFullMatch("Hello world", "^Hello world"));
+
+					// Fast partial match - compiled regex pattern _1 is used
+					printString("regexPartialMatch: 'Hello world' matches '^Hello': ");
+					println(regexPartialMatch("Hello world", RegexPattern._1));
+					
+					// Fast full match - compiled regex pattern _1 is used
+					printString("regexFullMatch: 'Hello world' matches '^Hello': ");
+					println(regexFullMatch("Hello world", RegexPattern._1));
+					
+					// Fast full match - compiled regex pattern _2 is used
+					printString("regexFullMatch: 'Hello world' matches 'Hello world$': ");
+					println(regexFullMatch("Hello world", RegexPattern._2));
+				}
+
+		}
+
+		()as Custom_2 = Custom(){
+			logic
+				onProcess : {
+					// Compile and index regex pattern _1 for Custom_2 
+					regexCompile("Hello$", RegexPattern._1);
+
+					// Fast partial match - compiled regex pattern _1 is used
+					printString("regexPartialMatch 2: 'Hello world' matches 'Hello$': ");
+					println(regexPartialMatchStatic("Hello world", RegexPattern._1));
+				}
+
+		}
+
+		()as Custom_3 = Custom(){
+			logic
+				onProcess : {
+					// Compile and index regex pattern _1 for Custom_2 
+					regexCompile("Hello2$", RegexPattern._1);
+
+					// Fast partial match - compiled regex pattern _1 is used
+					printString("regexPartialMatch 2: 'Hello world' matches 'Hello$': ");
+					println(regexPartialMatchStatic("Hello world", RegexPattern._1));
+				}
+
+		}
+}

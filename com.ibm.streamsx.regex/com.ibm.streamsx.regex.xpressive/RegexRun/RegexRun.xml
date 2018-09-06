@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operatorModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
+  <cppOperatorModel>
+    <context>
+      <description>
+RegexRun operator has three custom output functions: 
+* RegexPartialMatch performs a partial match - runs in compilation mode.
+* RegexFullMatch performs a full match - runs in compilation mode.
+* RegexGlobalReplace performs a global search/replace - runs in compilation mode.
+</description>
+      <customOutputFunctions>
+        <customOutputFunction>
+          <name>RegexFS</name>
+          <function pseudoFunction="true">
+            <description>Assign value to the output attribute.</description>
+            <prototype>&lt;any T> T AsIs(T v)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the whole string with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexFullMatch(rstring str)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the whole string with the pattern.</description>
+            <prototype>boolean RegexFullMatch(rstring str, rstring pattern)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the string with the pattern (defined as the operator parameter).</description>
+            <prototype>boolean RegexPartialMatch(rstring str)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Tries to match the string with the pattern.</description>
+            <prototype>boolean RegexPartialMatch(rstring str, rstring pattern)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Searches the string with the pattern (defined as the operator parameter) and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(rstring str, rstring rewrite)</prototype>
+          </function>
+          <function pseudoFunction="false">
+            <description>Searches the string with the pattern and replaces all found with rewrite.</description>
+            <prototype>rstring RegexGlobalReplace(rstring str, rstring pattern, rstring rewrite)</prototype>
+          </function>
+        </customOutputFunction>
+      </customOutputFunctions>
+      <libraryDependencies>
+        <library>
+          <cmn:description></cmn:description>
+          <cmn:managedLibrary>
+            <cmn:includePath>../../impl/include</cmn:includePath>
+            <cmn:command></cmn:command>
+          </cmn:managedLibrary>
+        </library>
+      </libraryDependencies>
+      <providesSingleThreadedContext>Always</providesSingleThreadedContext>
+      <allowCustomLogic>false</allowCustomLogic>
+    </context>
+    <parameters>
+      <description></description>
+      <allowAny>false</allowAny>
+      <parameter>
+        <name>pattern</name>
+        <description>The optional 'rstring' parameter specifies the pattern to match.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+    </parameters>
+    <inputPorts>
+      <inputPortSet>
+        <description>The RegexRun operator is configurable with a single input port. The input port is non-mutating and its punctuation mode is Oblivious.</description>
+        <windowingDescription></windowingDescription>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </inputPortSet>
+    </inputPorts>
+    <outputPorts>
+      <outputPortSet>
+        <description>The RegexRun operator is configurable with one output port. The output port is mutating and its punctuation mode is Preserving.</description>
+        <expressionMode>Expression</expressionMode>
+        <autoAssignment>true</autoAssignment>
+        <completeAssignment>true</completeAssignment>
+        <rewriteAllowed>true</rewriteAllowed>
+        <outputFunctions>
+          <default>AsIs</default>
+          <type>RegexFS</type>
+        </outputFunctions>
+        <windowPunctuationOutputMode>Preserving</windowPunctuationOutputMode>
+        <windowPunctuationInputPort>0</windowPunctuationInputPort>
+        <tupleMutationAllowed>true</tupleMutationAllowed>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </outputPortSet>
+    </outputPorts>
+  </cppOperatorModel>
+</operatorModel>

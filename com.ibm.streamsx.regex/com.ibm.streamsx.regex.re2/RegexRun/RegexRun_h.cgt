@@ -1,0 +1,33 @@
+@include "../../com.ibm.streamsx.regex/Common/RegexInclude_h.cgt"
+
+#include "re2/re2.h"
+
+<%SPL::CodeGen::headerPrologue($model);%>
+
+using SPL::rstring;
+
+class MY_OPERATOR : public MY_BASE_OPERATOR {
+private:
+  typedef ptr_unordered_map<rstring, RE2> RegexMap;
+  
+  RE2::Options _options;
+  RE2 _regex;
+
+  template<typename T> bool RegexFullMatch(const T & data);
+  template<typename T> bool RegexFullMatch(const T & data, const rstring & pattern);
+  template<typename T> bool RegexPartialMatch(const T & data);
+  template<typename T> bool RegexPartialMatch(const T & data, const rstring & pattern);
+  template<typename T> rstring RegexReplace(const T & data, const SPL::rstring & rewrite);
+  template<typename T> rstring RegexReplace(const T & data, const rstring & pattern, const SPL::rstring & rewrite);
+  template<typename T> rstring RegexGlobalReplace(const T & data, const SPL::rstring & rewrite);
+  template<typename T> rstring RegexGlobalReplace(const T & data, const rstring & pattern, const SPL::rstring & rewrite);
+  template<typename T> rstring RegexExtract(const T & data, const SPL::rstring & rewrite);
+  template<typename T> rstring RegexExtract(const T & data, const rstring & pattern, const SPL::rstring & rewrite);
+  
+  re2::StringPiece getStringPiece(const rstring & str) { return re2::StringPiece(str.data(), str.size()); }
+  re2::StringPiece getStringPiece(const blob & blb) { return re2::StringPiece(reinterpret_cast<const char*>(blb.getData()), blb.getSize()); }
+  
+  @include "../../com.ibm.streamsx.regex/Common/RegexOperator_h.cgt"
+}; 
+
+<%SPL::CodeGen::headerEpilogue($model);%>

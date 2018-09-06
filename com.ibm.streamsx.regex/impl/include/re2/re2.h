@@ -17,7 +17,7 @@
 // some of the more complicated things thrown away.  In particular,
 // backreferences and generalized assertions are not available, nor is \Z.
 //
-// See http://code.google.com/p/re2/wiki/Syntax for the syntax
+// See https://github.com/google/re2/wiki/Syntax for the syntax
 // supported by RE2, and a comparison with PCRE and PERL regexps.
 //
 // For those not familiar with Perl's regular expressions,
@@ -293,6 +293,11 @@ class RE2 {
   // Larger numbers are more expensive than smaller numbers.
   int ProgramSize() const;
 
+  // EXPERIMENTAL! SUBJECT TO CHANGE!
+  // Outputs the program fanout as a histogram bucketed by powers of 2.
+  // Returns the number of the largest non-empty bucket.
+  int ProgramFanout(map<int, int>* histogram) const;
+
   // Returns the underlying Regexp; not for general use.
   // Returns entire_regexp_ so that callers don't need
   // to know about prefix_ and prefix_foldcase_.
@@ -397,6 +402,8 @@ class RE2 {
   //
   // Returns true iff a match occurred and the extraction happened
   // successfully;  if no match occurs, the string is left unaffected.
+  //
+  // REQUIRES: "text" must not alias any part of "*out".
   static bool Extract(const StringPiece &text,
                       const RE2& pattern,
                       const StringPiece &rewrite,
@@ -440,7 +447,6 @@ class RE2 {
   // does not count: if the regexp is "(a)(b)", returns 2.
   int NumberOfCapturingGroups() const;
 
-
   // Return a map from names to capturing indices.
   // The map records the index of the leftmost group
   // with the given name.
@@ -459,8 +465,8 @@ class RE2 {
   // On a successful match, fills in match[] (up to nmatch entries)
   // with information about submatches.
   // I.e. matching RE2("(foo)|(bar)baz") on "barbazbla" will return true,
-  // setting match[0] = "barbaz", match[1] = NULL, match[2] = "bar",
-  // match[3] = NULL, ..., up to match[nmatch-1] = NULL.
+  // setting match[0] = "barbaz", match[1].data() = NULL, match[2] = "bar",
+  // match[3].data() = NULL, ..., up to match[nmatch-1].data() = NULL.
   //
   // Don't ask for more match information than you will use:
   // runs much faster with nmatch == 1 than nmatch > 1, and
@@ -471,7 +477,7 @@ class RE2 {
   // Passing text == StringPiece(NULL, 0) will be handled like any other
   // empty string, but note that on return, it will not be possible to tell
   // whether submatch i matched the empty string or did not match:
-  // either way, match[i] == NULL.
+  // either way, match[i].data() == NULL.
   bool Match(const StringPiece& text,
              int startpos,
              int endpos,
@@ -664,7 +670,7 @@ class RE2 {
     bool word_boundary_;
     bool one_line_;
 
-    //DISALLOW_EVIL_CONSTRUCTORS(Options);
+    //DISALLOW_COPY_AND_ASSIGN(Options);
     Options(const Options&);
     void operator=(const Options&);
   };
@@ -679,7 +685,7 @@ class RE2 {
   static inline Arg CRadix(unsigned int* x);
   static inline Arg CRadix(long* x);
   static inline Arg CRadix(unsigned long* x);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   static inline Arg CRadix(long long* x);
   static inline Arg CRadix(unsigned long long* x);
   #endif
@@ -690,7 +696,7 @@ class RE2 {
   static inline Arg Hex(unsigned int* x);
   static inline Arg Hex(long* x);
   static inline Arg Hex(unsigned long* x);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   static inline Arg Hex(long long* x);
   static inline Arg Hex(unsigned long long* x);
   #endif
@@ -701,7 +707,7 @@ class RE2 {
   static inline Arg Octal(unsigned int* x);
   static inline Arg Octal(long* x);
   static inline Arg Octal(unsigned long* x);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   static inline Arg Octal(long long* x);
   static inline Arg Octal(unsigned long long* x);
   #endif
@@ -739,7 +745,7 @@ class RE2 {
   // Map from capture indices to names
   mutable const map<int, string>* group_names_;
 
-  //DISALLOW_EVIL_CONSTRUCTORS(RE2);
+  //DISALLOW_COPY_AND_ASSIGN(RE2);
   RE2(const RE2&);
   void operator=(const RE2&);
 };
@@ -784,7 +790,7 @@ class RE2::Arg {
   MAKE_PARSER(unsigned int,       parse_uint);
   MAKE_PARSER(long,               parse_long);
   MAKE_PARSER(unsigned long,      parse_ulong);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   MAKE_PARSER(long long,          parse_longlong);
   MAKE_PARSER(unsigned long long, parse_ulonglong);
   #endif
@@ -795,12 +801,11 @@ class RE2::Arg {
 
 #undef MAKE_PARSER
 
-  // Generic constructor
-  template <class T> Arg(T*, Parser parser);
-  // Generic constructor template
+  // Generic constructor templates
   template <class T> Arg(T* p)
-    : arg_(p), parser_(_RE2_MatchObject<T>::Parse) {
-  }
+      : arg_(p), parser_(_RE2_MatchObject<T>::Parse) { }
+  template <class T> Arg(T* p, Parser parser)
+      : arg_(p), parser_(parser) { }
 
   // Parse the data
   bool Parse(const char* str, int n) const;
@@ -833,7 +838,7 @@ class RE2::Arg {
   DECLARE_INTEGER_PARSER(uint);
   DECLARE_INTEGER_PARSER(long);
   DECLARE_INTEGER_PARSER(ulong);
-  #ifdef RE2_HAVE_LONGLONG
+  #if RE2_HAVE_LONGLONG
   DECLARE_INTEGER_PARSER(longlong);
   DECLARE_INTEGER_PARSER(ulonglong);
   #endif
@@ -863,7 +868,7 @@ MAKE_INTEGER_PARSER(int,                int)
 MAKE_INTEGER_PARSER(unsigned int,       uint)
 MAKE_INTEGER_PARSER(long,               long)
 MAKE_INTEGER_PARSER(unsigned long,      ulong)
-#ifdef RE2_HAVE_LONGLONG
+#if RE2_HAVE_LONGLONG
 MAKE_INTEGER_PARSER(long long,          longlong)
 MAKE_INTEGER_PARSER(unsigned long long, ulonglong)
 #endif

@@ -1,0 +1,6 @@
+#include <streams_boost/ptr_container/ptr_unordered_map.hpp>
+#include <streams_boost/thread/tss.hpp>
+
+using namespace std;
+using streams_boost::ptr_unordered_map;
+using streams_boost::thread_specific_ptr;

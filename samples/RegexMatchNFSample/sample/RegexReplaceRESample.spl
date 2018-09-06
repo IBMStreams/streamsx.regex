@@ -1,0 +1,88 @@
+namespace sample ;
+
+use com.ibm.streamsx.regex::* ;
+use com.ibm.streamsx.regex.re2::*;
+
+/**
+* Run functional tests using native functions.
+* 
+* * Functional tests for interpreted and compiled partial/full matches.
+* 
+* The output:
+* * regexPartialMatch: 'Hello world' matches '^Hello': true
+* * regexFullMatch: 'Hello world' matches '^Hello world': true
+* * regexPartialMatch: 'Hello world' matches '^Hello': true
+* * regexFullMatch: 'Hello world' matches '^Hello': false
+* * regexFullMatch: 'Hello world' matches 'Hello world$': true
+* * regexPartialMatch 2: 'Hello world' matches '': true
+* * WARN #splapptrc,J[0],P[0],Custom_2,REGEX M[Regex_re2.h:getRE2Options:28]  - "Regular expression '' is empty, possibly 'regexCompile' was not called before."
+* * ERROR #splapplog,J[0],P[0],Custom_3,spl_pe M[PEImpl.cpp:logTerminatingException:1988]  - CDISR5033E: An exception occurred during the execution of the Custom_3 operator. Processing element number 0 is terminating.
+* * ERROR #splapptrc,J[0],P[0],Custom_3,#splapptrc,J[0],P[0],Custom_3,spl_operator M[PEImpl.cpp:handleOperatorFailure:596]  - CDISR5030E: An exception occurred during the execution of the Custom_3 operator. The exception is: "Regular expression '[' failed to compile - missing ]: ["
+* * ERROR #splapptrc,J[0],P[0],Custom_2,spl_operator M[PEImpl.cpp:process:1367]  - CDISR5053E: Runtime failures occurred in the following operators: Custom_3.
+
+*/
+composite RegexMatchRESample
+{
+	graph
+		() as Custom_1 = Custom()
+		{
+			logic
+				state : {
+					// regexCompile can be called within a state
+					boolean _ = regexCompile("^Hello", RegexPattern._1); // Compile and index regex pattern _1
+					boolean __ = regexCompile("Hello world$", RegexPattern._2); // Compile and index regex pattern _2
+				}
+				onProcess :
+				{
+					// regexCompile can be called inside logic processing - nevertheless the compilation will run only once on the first call
+					regexCompile(".*VERY_BIG_PATTERN.*", RegexPattern._3, 10000000l); // Compile and index regex pattern _3, increase allocated memory
+
+					// Simple partial match (similar to SPL regex functions) - regex pattern is interpreted on each call (no compilation done)
+					printString("regexPartialMatch: 'Hello world' matches '^Hello': ") ;
+					println(regexPartialMatch("Hello world", "^Hello")) ;
+
+					// Simple full match (the whole string is matched) - regex pattern is interpreted on each call (no compilation done)
+					printString("regexFullMatch: 'Hello world' matches '^Hello world': ") ;
+					println(regexFullMatch("Hello world", "^Hello world")) ;
+
+					// Fast partial match - compiled regex pattern _1 is used
+					printString("regexPartialMatch: 'Hello world' matches '^Hello': ") ;
+					println(regexPartialMatch("Hello world", RegexPattern._1)) ;
+
+					// Fast full match - compiled regex pattern _1 is used
+					printString("regexFullMatch: 'Hello world' matches '^Hello': ") ;
+					println(regexFullMatch("Hello world", RegexPattern._1)) ;
+
+					// Fast full match - compiled regex pattern _2 is used
+					printString("regexFullMatch: 'Hello world' matches 'Hello world$': ") ;
+					println(regexFullMatch("Hello world", RegexPattern._2)) ;
+				}
+
+		}
+
+		() as Custom_2 = Custom()
+		{
+			logic
+				onProcess :
+				{
+					block(1.0);
+					// Fast partial match - regex pattern _1 is used, but not compiled first
+					printString("regexPartialMatch 2: 'Hello world' matches '': ") ;
+					println(regexPartialMatch("Hello world", RegexPattern._1)) ;
+				}
+
+		}
+
+		() as Custom_3 = Custom()
+		{
+			logic
+				onProcess :
+				{
+					block(2.0);
+					// Compile and index erroneous regex pattern - error is thrown
+					regexCompile("[", RegexPattern._1) ;
+				}
+
+		}
+
+}
