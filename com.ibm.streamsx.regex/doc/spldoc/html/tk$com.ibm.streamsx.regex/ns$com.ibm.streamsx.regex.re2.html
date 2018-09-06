@@ -22,14 +22,14 @@
 <div class="body refbody">
 <div class="section">
 <p class="p">
-<a class="xref" href="../toolkits/toolkits.html">Regex toolkit documentation</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.regex.html">com.ibm.streamsx.regex 1.4.2</a> &gt; com.ibm.streamsx.regex.re2</p>
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.regex.html">com.ibm.streamsx.regex 2.0.0</a> &gt; com.ibm.streamsx.regex.re2</p>
 
 </div>
 
 <div class="section"><h2 class="title sectiontitle splhead-1">Operators</h2>
   
 <ul class="sl simple">
-<li class="sli"><strong class="ph b"><a class="xref" href="op$com.ibm.streamsx.regex.re2$RegexMatch.html">RegexMatch</a></strong>: RegexMatch operator has three custom output functions:  RegexSimpleMatch performs a partial match - runs in interpretation mode (like SPL regexMatch function).
+<li class="sli"><strong class="ph b"><a class="xref" href="op$com.ibm.streamsx.regex.re2$RegexRun.html">RegexRun</a></strong>: RegexRun operator has five custom output functions:  
 </li>
 
 </ul>
@@ -39,101 +39,31 @@
 <div class="section"><h2 class="title sectiontitle splhead-1">Functions</h2>
   
 <ul class="sl simple">
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexCompile.rstring.E">regexCompile(rstring, E)</a></strong>: Compiles and indexes regex pattern
+<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexCompile.rstring.E">regexCompile(rstring, E)</a></strong>: Compiles and indexes regular expression pattern.
 </li>
 
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexCompile.rstring.E.int64">regexCompile(rstring, E, int64)</a></strong>: Compiles and indexes regex pattern, additionally allows to control max memory allocated
+<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexCompile.rstring.E.int64">regexCompile(rstring, E, int64)</a></strong>: Compiles and indexes regular expression pattern, allows to control max memory allocated.
 </li>
 
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexCompileStatic.rstring.E">regexCompileStatic(rstring, E)</a></strong>: Compiles and indexes regex pattern.
+<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexExtract.rstring.E.rstring">regexExtract(rstring, E, rstring)</a></strong>: Performs extraction of parameters from the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
 </li>
 
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexCompileStatic.rstring.E.int64">regexCompileStatic(rstring, E, int64)</a></strong>: Compiles and indexes regex pattern, additionally allows to control max memory allocated.
+<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexFullMatch.rstring.E">regexFullMatch(rstring, E)</a></strong>: Performs a full match of the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
 </li>
 
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexFullMatch.rstring.E">regexFullMatch(rstring, E)</a></strong>: Performs a full match of  the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern)
+<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexFullMatch.rstring.rstring">regexFullMatch(rstring, rstring)</a></strong>: Performs a full match of the whole string with the pattern - runs in interpretation mode (like SPL regexMatch function).
 </li>
 
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexFullMatch.rstring.rstring">regexFullMatch(rstring, rstring)</a></strong>: Performs a full match of the whole string with the pattern - runs in interpretation mode (like SPL regexMatch function)
+<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexGlobalReplace.rstring.E.rstring">regexGlobalReplace(rstring, E, rstring)</a></strong>: Performs all replacements of the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
 </li>
 
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexFullMatchStatic.rstring.E">regexFullMatchStatic(rstring, E)</a></strong>: Performs a full match of  the whole string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexPartialMatch.rstring.E">regexPartialMatch(rstring, E)</a></strong>: Performs a partial match of the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern)
+<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexPartialMatch.rstring.E">regexPartialMatch(rstring, E)</a></strong>: Performs a partial match of the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
 </li>
 
 <li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexPartialMatch.rstring.rstring">regexPartialMatch(rstring, rstring)</a></strong>: Performs a partial match of the string with the pattern - runs in interpretation mode (like SPL regexMatch function).
 </li>
 
-<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexPartialMatchStatic.rstring.E">regexPartialMatchStatic(rstring, E)</a></strong>: Performs a partial match of  the string with the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
-</li>
-
-</ul>
-
-</div>
-
-<div class="section"><h2 class="title sectiontitle splhead-1">Types</h2>
-  
-<ul class="sl simple">
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_1">RegexPattern.type_1</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_10">RegexPattern.type_10</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_11">RegexPattern.type_11</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_12">RegexPattern.type_12</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_13">RegexPattern.type_13</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_14">RegexPattern.type_14</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_15">RegexPattern.type_15</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_16">RegexPattern.type_16</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_17">RegexPattern.type_17</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_18">RegexPattern.type_18</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_19">RegexPattern.type_19</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_2">RegexPattern.type_2</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_20">RegexPattern.type_20</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_3">RegexPattern.type_3</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_4">RegexPattern.type_4</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_5">RegexPattern.type_5</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_6">RegexPattern.type_6</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_7">RegexPattern.type_7</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_8">RegexPattern.type_8</a></strong>
-</li>
-
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.regex.re2$Types.html#spldoc_compilationunit__composite_type__RegexPattern.type_9">RegexPattern.type_9</a></strong>
+<li class="sli"><strong class="ph b"><a class="xref" href="fc$com.ibm.streamsx.regex.re2.html#spldoc_functions__regexReplace.rstring.E.rstring">regexReplace(rstring, E, rstring)</a></strong>: Performs one replacement of the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
 </li>
 
 </ul>

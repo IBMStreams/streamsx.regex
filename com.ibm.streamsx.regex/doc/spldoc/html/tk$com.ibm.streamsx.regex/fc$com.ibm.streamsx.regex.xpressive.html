@@ -7,22 +7,22 @@
 <meta name="copyright" content="(C) Copyright 2005"/>
 <meta name="DC.rights.owner" content="(C) Copyright 2005"/>
 <meta name="DC.Type" content="reference"/>
-<meta name="DC.Title" content="C++ Native Functions: com.ibm.streamsx.regex.re2"/>
+<meta name="DC.Title" content="C++ Native Functions: com.ibm.streamsx.regex.xpressive"/>
 <meta name="DC.Format" content="XHTML"/>
 <meta name="DC.Identifier" content="spldoc_functions"/>
 <link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
 <link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
-<title>C++ Native Functions: com.ibm.streamsx.regex.re2</title>
+<title>C++ Native Functions: com.ibm.streamsx.regex.xpressive</title>
 </head>
 <body id="spldoc_functions">
 
 
-<h1 class="title topictitle1">C++ Native Functions: <tt class="ph tt">com.ibm.streamsx.regex.re2</tt></h1>
+<h1 class="title topictitle1">C++ Native Functions: <tt class="ph tt">com.ibm.streamsx.regex.xpressive</tt></h1>
 
 <div class="body refbody">
 <div class="section">
 <p class="p">
-<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.regex.html">com.ibm.streamsx.regex 2.0.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.regex.re2.html">com.ibm.streamsx.regex.re2</a> &gt; C++ Native Functions</p>
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.regex.html">com.ibm.streamsx.regex 2.0.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.regex.xpressive.html">com.ibm.streamsx.regex.xpressive</a> &gt; C++ Native Functions</p>
 
 </div>
 
@@ -82,144 +82,6 @@ This page documents native functions that can be invoked from SPL, including the
        <dd class="dd">
 
 <p class="p">boolean regular expression compilation success.
-</p>
-       </dd>
-
-     
-</dl>
-
-   </dd>
-
- 
- 
-   <dt class="dt dlterm splpart" id="spldoc_functions__regexCompile.rstring.E.int64"><tt class="ph tt">      &lt;enum E&gt; public boolean regexCompile(rstring pattern, E patternIndex, int64 maxmem)      </tt>   </dt>
-
-   <dd class="dd">
-<p class="p">Compiles and indexes regular expression pattern, allows to control max memory allocated.
-</p>
-
-   <dl class="dl">
-     <dt class="dt dlterm"/>
-<dd class="dd"/>
-
-     
-       <dt class="dt dlterm">Parameters</dt>
-
-       <dd class="dd">
-         <dl class="dl" compact="compact">
-           
-             <dt class="dt dlterm"><tt class="ph tt">pattern</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">regular expression pattern of type rstring.  
-</p>
-
-             </dd>
-
-           
-           
-             <dt class="dt dlterm"><tt class="ph tt">patternIndex</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">regular expression index of enum type (e.g. enum{_1}). 
-</p>
-
-             </dd>
-
-           
-           
-             <dt class="dt dlterm"><tt class="ph tt">maxmem</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">maximum allocated memory allowed of type int64. 
-</p>
-
-             </dd>
-
-           
-         </dl>
-
-       </dd>
-
-     
-     
-       <dt class="dt dlterm">Returns</dt>
-
-       <dd class="dd">
-
-<p class="p">boolean regular expression compilation success.
-</p>
-       </dd>
-
-     
-</dl>
-
-   </dd>
-
- 
- 
-   <dt class="dt dlterm splpart" id="spldoc_functions__regexExtract.rstring.E.rstring"><tt class="ph tt">      &lt;enum E&gt; public boolean regexExtract(rstring str, E patternIndex, mutable rstring rewrite)      </tt>   </dt>
-
-   <dd class="dd">
-<p class="p">Performs extraction of parameters from the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
-</p>
-
-   <dl class="dl">
-     <dt class="dt dlterm"/>
-<dd class="dd"/>
-
-     
-       <dt class="dt dlterm">Parameters</dt>
-
-       <dd class="dd">
-         <dl class="dl" compact="compact">
-           
-             <dt class="dt dlterm"><tt class="ph tt">str</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">string to match of type rstring.  
-</p>
-
-             </dd>
-
-           
-           
-             <dt class="dt dlterm"><tt class="ph tt">patternIndex</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">regular expression index of enum type (e.g. enum{_1}). 
-</p>
-
-             </dd>
-
-           
-           
-             <dt class="dt dlterm"><tt class="ph tt">rewrite</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">string to construct with the extracted parameters of type rstring. 
-</p>
-
-             </dd>
-
-           
-         </dl>
-
-       </dd>
-
-     
-     
-       <dt class="dt dlterm">Returns</dt>
-
-       <dd class="dd">
-
-<p class="p">boolean matching success.
 </p>
        </dd>
 
@@ -346,7 +208,7 @@ This page documents native functions that can be invoked from SPL, including the
 
  
  
-   <dt class="dt dlterm splpart" id="spldoc_functions__regexGlobalReplace.rstring.E.rstring"><tt class="ph tt">      &lt;enum E&gt; public int32 regexGlobalReplace(mutable rstring str, E patternIndex, rstring rewrite)      </tt>   </dt>
+   <dt class="dt dlterm splpart" id="spldoc_functions__regexGlobalReplace.rstring.E.rstring"><tt class="ph tt">      &lt;enum E&gt; public rstring regexGlobalReplace(rstring str, E patternIndex, rstring rewrite)      </tt>   </dt>
 
    <dd class="dd">
 <p class="p">Performs all replacements of the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
@@ -404,7 +266,7 @@ This page documents native functions that can be invoked from SPL, including the
 
        <dd class="dd">
 
-<p class="p">int32 number of matching successes.
+<p class="p">rstring number of matching successes.
 </p>
        </dd>
 
@@ -505,75 +367,6 @@ This page documents native functions that can be invoked from SPL, including the
              <dd class="dd">
 
 <p class="p">regular expression of type rstring. 
-</p>
-
-             </dd>
-
-           
-         </dl>
-
-       </dd>
-
-     
-     
-       <dt class="dt dlterm">Returns</dt>
-
-       <dd class="dd">
-
-<p class="p">boolean matching success.
-</p>
-       </dd>
-
-     
-</dl>
-
-   </dd>
-
- 
- 
-   <dt class="dt dlterm splpart" id="spldoc_functions__regexReplace.rstring.E.rstring"><tt class="ph tt">      &lt;enum E&gt; public boolean regexReplace(mutable rstring str, E patternIndex, rstring rewrite)      </tt>   </dt>
-
-   <dd class="dd">
-<p class="p">Performs one replacement of the string after matching the pattern - runs in compiled mode (uses compiled regex index to identify the pattern).
-</p>
-
-   <dl class="dl">
-     <dt class="dt dlterm"/>
-<dd class="dd"/>
-
-     
-       <dt class="dt dlterm">Parameters</dt>
-
-       <dd class="dd">
-         <dl class="dl" compact="compact">
-           
-             <dt class="dt dlterm"><tt class="ph tt">str</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">string to match of type rstring.  
-</p>
-
-             </dd>
-
-           
-           
-             <dt class="dt dlterm"><tt class="ph tt">patternIndex</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">regular expression index of enum type (e.g. enum{_1}). 
-</p>
-
-             </dd>
-
-           
-           
-             <dt class="dt dlterm"><tt class="ph tt">rewrite</tt></dt>
-
-             <dd class="dd">
-
-<p class="p">replace string of type rstring. 
 </p>
 
              </dd>

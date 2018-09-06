@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File RegexMatchXPSample.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File RegexMatchXPSample.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">RegexMatchXPSample.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$RegexSamples.html">RegexSamples 2.0.0</a> &gt; <a class="xref" href="ns$sample.html">sample</a> &gt; RegexMatchXPSample.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$sample$RegexMatchXPSample.html#spldoc_compilationunit__composite_operator__RegexMatchXPSample">RegexMatchXPSample</a></strong>: Run two separate streams: performance test and functional test.
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__RegexMatchXPSample"><h2 class="title sectiontitle splpart">public composite RegexMatchXPSample</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$RegexSamples/op$sample$RegexMatchXPSample.svg" width="337" height="154"/>
+</div>
+
+<div class="section">
+
+<p class="p">Run two separate streams: performance test and functional test.
+</p>
+
+<div class="p">
+<ul class="ul">
+<li class="li"> Performance test - Beacon shoots 10,000,000 tuples. No output.</li>
+
+<li class="li"> Functional test - Beacon outputs intermittently 2 patterns ("^Hello" and "Hello$") and 1 string to match ("Hello World " + count).</li>
+
+</ul>
+
+</div>
+
+<div class="p">The result:
+<ul class="ul">
+<li class="li"> Hello World 0,true</li>
+
+<li class="li"> Hello World 1,false</li>
+
+<li class="li"> Hello World 2,true</li>
+
+<li class="li"> Hello World 3,false </li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite RegexMatchXPSample {
+ 	graph
+ 		(stream&lt;rstring str&gt; Beacon_1_out0)as Beacon_1 = Beacon(){
+ 			param
+ 				iterations : 10000000 ;
+ 			output
+ 				Beacon_1_out0 : str = "Hello World" ;
+ 		}
+ 
+ 		(stream&lt;rstring str, rstring pattern&gt; Beacon_2_out0)as Beacon_2 = Beacon(){
+ 			param
+ 				iterations : 4 ;
+ 			output
+ 				Beacon_2_out0 :
+ 					pattern = (int32)IterationCount() % 2 == 0 ? "^Hello" : "Hello$",
+ 					str = "Hello World " + (rstring)IterationCount();
+ 		}
+ 
+ 		// Matching string with precompiled regex pattern (from parameter)
+ 		(stream&lt;rstring str, boolean result&gt; RegexMatch_2_out0) as RegexMatch_2 = RegexRun(Beacon_1_out0){
+ 			param
+ 				pattern : "^Hello" ;
+ 			output
+ 				RegexMatch_2_out0 : result = RegexPartialMatch(str);
+ 		}
+ 
+ 		// Matching string with updated precompiled regex pattern (from input attribute)
+ 		(stream&lt;rstring str, boolean result&gt; RegexMatch_3_out0) as RegexMatch_3 = RegexRun(Beacon_2_out0){
+ 			output
+ 				RegexMatch_3_out0 : result = RegexPartialMatch(str, pattern);
+ 		}
+ 
+ 		()as FileSink_3 = FileSink(RegexMatch_3_out0){
+ 			param
+ 				file : "/dev/stdout" ;
+ 				quoteStrings : false;
+ 		}
+ }
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>

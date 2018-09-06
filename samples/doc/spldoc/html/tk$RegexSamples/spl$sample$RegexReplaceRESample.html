@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File RegexReplaceRESample.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File RegexReplaceRESample.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">RegexReplaceRESample.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$RegexSamples.html">RegexSamples 2.0.0</a> &gt; <a class="xref" href="ns$sample.html">sample</a> &gt; RegexReplaceRESample.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$sample$RegexReplaceRESample.html#spldoc_compilationunit__composite_operator__RegexReplaceRESample">RegexReplaceRESample</a></strong>
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__RegexReplaceRESample"><h2 class="title sectiontitle splpart">public composite RegexReplaceRESample</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$RegexSamples/op$sample$RegexReplaceRESample.svg" width="342" height="200"/>
+</div>
+
+<div class="section">
+
+<div class="p">
+<ul class="ul">
+<li class="li"> Functional test - Beacon outputs pattern and string to match.</li>
+
+</ul>
+
+</div>
+
+<div class="p">The result:
+<ul class="ul">
+<li class="li"> RegexReplace: replaces a first 'Hello' word with 'Hi': &lt;Hi world, Hello&gt;</li>
+
+<li class="li"> RegexGlobalReplace: replaces all 'Hello' words with 'Hi': &lt;Hi world, Hi&gt;</li>
+
+<li class="li"> RegexExtract: 'foo' and 'bar' are extracted and replace placeholders in string: &lt;In domain 'bar', user 'foo' exists!&gt; </li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite RegexReplaceRESample {
+ 	graph
+ 		(stream&lt;rstring str, rstring pattern&gt; Beacon_1_out0)as Beacon_1 = Beacon(){
+ 			param
+ 				iterations : 1 ;
+ 			output
+ 				Beacon_1_out0 :
+ 					pattern = "(.*)@([^.]*)",
+ 					str = "foo@bar.com";
+ 		}
+ 
+ 		// Replacing string once with precompiled regex pattern (from parameter)
+ 		(stream&lt;rstring str, rstring result&gt; RegexRun_1_out0) as RegexRun_1 = RegexRun(Beacon_1_out0){
+ 			param
+ 				pattern : "Hello" ;
+ 			output
+ 				RegexRun_1_out0 : result = RegexReplace("&lt;Hello world, Hello&gt;", "Hi");
+ 		}
+ 
+ 		() as PSink = Custom(RegexRun_1_out0)  {
+             logic
+                 onTuple RegexRun_1_out0: {
+ 					printString("RegexReplace: replaces a first 'Hello' word with 'Hi': ") ;
+                     printStringLn(result);
+                 }
+         }
+ 
+ 		// Replacing string with precompiled regex pattern (from parameter)
+ 		(stream&lt;rstring str, rstring result&gt; RegexRun_1_out1) as RegexRun_1_1 = RegexRun(Beacon_1_out0){
+ 			param
+ 				pattern : "Hello" ;
+ 			output
+ 				RegexRun_1_out1 : result = RegexGlobalReplace("&lt;Hello world, Hello&gt;", "Hi");
+ 		}
+ 
+ 		() as PSink1 = Custom(RegexRun_1_out1)  {
+             logic
+                 onTuple RegexRun_1_out1: {
+ 					printString("RegexGlobalReplace: replaces all 'Hello' words with 'Hi': ") ;
+                     printStringLn(result);
+                 }
+         }
+ 
+ 		// Extracting string with updated precompiled regex pattern (from input attribute)
+ 		(stream&lt;rstring str, rstring result&gt; RegexRun_2_out0) as RegexRun_2 = RegexRun(Beacon_1_out0){
+ 			output
+ 				RegexRun_2_out0 : result = RegexExtract(str, pattern, "&lt;In domain '\\2', user '\\1' exists!&gt;");
+ 		}
+ 
+ 		() as PSink2 = Custom(RegexRun_2_out0)  {
+             logic
+                 onTuple RegexRun_2_out0: {
+  					printString("RegexExtract: 'foo' and 'bar' are extracted and replace placeholders in string: ") ;
+                     printStringLn(result);
+                 }
+         }
+ }
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>
